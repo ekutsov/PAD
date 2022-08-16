@@ -1,0 +1,27 @@
+@inherits LayoutComponentBase
+<RadzenDialog />
+<RadzenNotification />
+<RadzenTooltip />
+<RadzenContextMenu />
+
+<RadzenLayout>
+    <RadzenHeader>
+        <div class="row justify-content-space-start align-items-center">
+          <div class="col-6 d-flex align-items-center">
+            <RadzenSidebarToggle Click="@SidebarToggleClick"></RadzenSidebarToggle>
+            <RadzenLabel Text="Personal Finance Assistant" Style="font-size: 20px"></RadzenLabel>
+          </div>
+        </div>
+    </RadzenHeader>
+    <RadzenBody Expanded="@sidebarExpanded" Style="color: #000000">
+        <RadzenContentContainer Name="main">
+        @Body
+        </RadzenContentContainer>
+    </RadzenBody>
+    <RadzenSidebar Expanded="@sidebarExpanded">
+        <RadzenPanelMenu style="height: 100%">
+            <RadzenPanelMenuItem Text="Dashboard" Icon="dashboard" Path="/"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Data" Path="/data" Icon="backup_table" />
+        </RadzenPanelMenu>
+    </RadzenSidebar>
+</RadzenLayout>

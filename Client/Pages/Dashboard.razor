@@ -1,0 +1,24 @@
+@page "/"
+
+<PageTitle>Dashboard</PageTitle>
+<RadzenContent Container="main">
+    <RadzenHeading Size="H1" Text="Dashboard" />
+    <div class="row">
+        <div class="col-sm-12 col-lg-3">
+            <RadzenCard>
+                <RadzenChart>
+                    <RadzenDonutSeries Data="@revenue" CategoryProperty="Quarter" ValueProperty="Revenue">
+                        <ChildContent>
+                            <RadzenSeriesDataLabels Visible="@showDataLabels" />
+                        </ChildContent>
+                        <TitleTemplate>
+                            <div class="rz-donut-content">
+                                <div>Categories</div>
+                            </div>
+                        </TitleTemplate>
+                    </RadzenDonutSeries>
+                </RadzenChart>
+            </RadzenCard>
+        </div>
+    </div>
+</RadzenContent>
