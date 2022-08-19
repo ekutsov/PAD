@@ -1,7 +1,9 @@
-namespace PFA.Client.Pages
-{
-    public partial class Index
-    {
+using Microsoft.AspNetCore.Authorization;
 
-    }
+namespace PFA.Client.Pages;
+
+[Authorize]
+public partial class Data
+{
+
 }

@@ -1,0 +1,14 @@
+@page "/account/login"
+@layout BaseLayout
+
+<PageTitle>Login</PageTitle>
+<RadzenContent Container="main" Style="height: 100%" class="d-flex align-items-center justify-content-center">
+    <RadzenCard Style="width: 415px">
+            <h2 class="mb-4" style="text-align: center;">Welcome to PFA</h2>
+            <RadzenTemplateForm Data=@("LoginWithRegisterAndReset")>
+            <RadzenLogin Login=@(async(args) => await OnLoginAsync(args)) 
+                            ResetPassword=@(args => OnResetPassword(args))
+                            Register=@(args => OnRegister()) LoginText="Sign in" />
+            </RadzenTemplateForm>
+        </RadzenCard>
+</RadzenContent>

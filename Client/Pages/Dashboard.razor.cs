@@ -1,4 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
+
 namespace PFA.Client.Pages;
+
+[Authorize]
 public partial class Dashboard
 {
     public bool showDataLabels = false;
