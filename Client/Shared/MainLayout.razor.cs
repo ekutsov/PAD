@@ -1,14 +1,47 @@
-using PFA.Client.Services;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.AspNetCore.Components;
+using Radzen.Blazor;
 
-namespace PFA.Client.Shared
+namespace PFA.Client.Shared;
+
+public partial class MainLayout
 {
-    public partial class MainLayout
-    {
-        protected bool isSidebarExpanded = true;
+    [Inject]
+    protected NavigationManager Navigation { get; set; }
 
-        void SidebarToggleClick()
+    [Inject]
+    protected SignOutSessionStateManager SignOutManager { get; set; }
+
+    [Inject]
+
+    protected AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+    private string UserName { get; set; }
+
+    protected bool isSidebarExpanded = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AuthenticationState authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        UserName = authState.User.Identity.Name;
+    }
+
+    void SidebarToggleClick()
+    {
+        isSidebarExpanded = !isSidebarExpanded;
+    }
+
+    protected async Task ProfileMenuClick(RadzenProfileMenuItem args)
+    {
+        switch (args.Text)
         {
-            isSidebarExpanded = !isSidebarExpanded;
+            case "Logout":
+                await SignOutManager.SetSignOutState();
+                Navigation.NavigateTo("authentication/logout");
+                break;
+            default:
+                throw new NotImplementedException();
         }
     }
 }

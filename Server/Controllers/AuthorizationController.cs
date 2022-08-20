@@ -16,6 +16,7 @@ using PFA.Server.Models;
 
 namespace PFA.Server.Controllers;
 
+[Route("connect")]
 public class AuthorizationController : Controller
 {
     private readonly IOpenIddictApplicationManager _applicationManager;
@@ -38,8 +39,8 @@ public class AuthorizationController : Controller
         _userManager = userManager;
     }
 
-    [HttpGet("~/connect/authorize")]
-    [HttpPost("~/connect/authorize")]
+    [HttpGet("authorize")]
+    [HttpPost("authorize")]
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> Authorize()
     {
@@ -184,7 +185,7 @@ public class AuthorizationController : Controller
     }
 
     [Authorize, FormValueRequired("submit.Accept")]
-    [HttpPost("~/connect/authorize"), ValidateAntiForgeryToken]
+    [HttpPost("authorize"), ValidateAntiForgeryToken]
     public async Task<IActionResult> Accept()
     {
         var request = HttpContext.GetOpenIddictServerRequest() ??
@@ -260,15 +261,15 @@ public class AuthorizationController : Controller
     }
 
     [Authorize, FormValueRequired("submit.Deny")]
-    [HttpPost("~/connect/authorize"), ValidateAntiForgeryToken]
+    [HttpPost("authorize"), ValidateAntiForgeryToken]
     // Notify OpenIddict that the authorization grant has been denied by the resource owner
     // to redirect the user agent to the client application using the appropriate response_mode.
     public IActionResult Deny() => Forbid(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
 
-    [HttpGet("~/connect/logout")]
+    [HttpGet("logout")]
     public IActionResult Logout() => View();
 
-    [ActionName(nameof(Logout)), HttpPost("~/connect/logout"), ValidateAntiForgeryToken]
+    [ActionName(nameof(Logout)), HttpPost("logout"), ValidateAntiForgeryToken]
     public async Task<IActionResult> LogoutPost()
     {
         // Ask ASP.NET Core Identity to delete the local and external cookies created
@@ -287,7 +288,7 @@ public class AuthorizationController : Controller
             });
     }
 
-    [HttpPost("~/connect/token"), IgnoreAntiforgeryToken, Produces("application/json")]
+    [HttpPost("token"), IgnoreAntiforgeryToken, Produces("application/json")]
     public async Task<IActionResult> Exchange()
     {
         var request = HttpContext.GetOpenIddictServerRequest() ??

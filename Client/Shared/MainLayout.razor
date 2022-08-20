@@ -12,15 +12,23 @@
                 <RadzenSidebarToggle Click="@SidebarToggleClick"></RadzenSidebarToggle>
                 <RadzenLabel Text="Personal Finance Assistant" Style="font-size: 20px"></RadzenLabel>
             </div>
+            <div class="col-6 d-flex align-items-center justify-content-end">
+                <RadzenProfileMenu Click="ProfileMenuClick">
+                    <Template>
+                        <RadzenGravatar Email="@UserName" />
+                    </Template>
+                    <ChildContent>
+                        <RadzenProfileMenuItem Icon="account_circle" Text="Profile (in progress)"></RadzenProfileMenuItem>
+                        <RadzenProfileMenuItem Text="Logout" Icon="login"></RadzenProfileMenuItem>
+                    </ChildContent>
+                </RadzenProfileMenu>
+            </div>
         </div>
     </RadzenHeader>
     <RadzenSidebar Expanded="@isSidebarExpanded">
         <RadzenPanelMenu style="height: 100%; display: flex; flex-direction: column">
             <RadzenPanelMenuItem Text="Dashboard" Icon="dashboard" Path="/"></RadzenPanelMenuItem>
             <RadzenPanelMenuItem Text="Data" Path="/data" Icon="backup_table" />
-            <div style="flex: 1;"></div>
-            <RadzenPanelMenuItem Text="Logout" Icon="login" Selected="false" Path="/account/logout">
-            </RadzenPanelMenuItem>
         </RadzenPanelMenu>
     </RadzenSidebar>
     <RadzenBody Expanded="@isSidebarExpanded" Style="color: #000000">

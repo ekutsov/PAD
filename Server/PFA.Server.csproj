@@ -29,5 +29,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Client\PFA.Client.csproj" />
+    <ProjectReference Include="..\Shared\PFA.Shared.csproj" />
   </ItemGroup>
 </Project>

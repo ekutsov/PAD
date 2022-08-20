@@ -17,7 +17,7 @@ builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
 
-builder.Services.AddHttpClient("Balosar.ServerAPI")
+builder.Services.AddHttpClient("PFA.ServerAPI")
     .ConfigureHttpClient(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
@@ -25,12 +25,12 @@ builder.Services.AddHttpClient("Balosar.ServerAPI")
 builder.Services.AddScoped(provider =>
 {
     var factory = provider.GetRequiredService<IHttpClientFactory>();
-    return factory.CreateClient("Balosar.ServerAPI");
+    return factory.CreateClient("PFA.ServerAPI");
 });
 
 builder.Services.AddOidcAuthentication(options =>
 {
-    options.ProviderOptions.ClientId = "balosar-blazor-client";
+    options.ProviderOptions.ClientId = "pfa-blazor-client";
     options.ProviderOptions.Authority = "https://localhost:44310/";
     options.ProviderOptions.ResponseType = "code";
 
