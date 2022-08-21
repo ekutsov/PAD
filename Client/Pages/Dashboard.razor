@@ -3,22 +3,18 @@
 <PageTitle>Dashboard</PageTitle>
 <RadzenContent Container="main">
     <RadzenHeading Size="H1" Text="Dashboard" />
-    <div class="row">
-        <div>
-            <RadzenCard>
-                <RadzenChart>
-                    <RadzenDonutSeries Data="@revenue" CategoryProperty="Quarter" ValueProperty="Revenue">
-                        <ChildContent>
-                            <RadzenSeriesDataLabels Visible="@showDataLabels" />
-                        </ChildContent>
-                        <TitleTemplate>
-                            <div class="rz-donut-content">
-                                <div>Categories</div>
-                            </div>
-                        </TitleTemplate>
-                    </RadzenDonutSeries>
-                </RadzenChart>
-            </RadzenCard>
-        </div>
-    </div>
+    <RadzenCard>
+        <RadzenChart>
+            <RadzenDonutSeries Data="@revenue" CategoryProperty="Quarter" ValueProperty="Revenue">
+                <ChildContent>
+                    <RadzenSeriesDataLabels Visible="@showDataLabels" />
+                </ChildContent>
+                <TitleTemplate>
+                    <div class="rz-donut-content">
+                        <div>Categories</div>
+                    </div>
+                </TitleTemplate>
+            </RadzenDonutSeries>
+        </RadzenChart>
+    </RadzenCard>
 </RadzenContent>

@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-
 namespace PFA.Server.ViewModels;
 
 public class LogoutViewModel

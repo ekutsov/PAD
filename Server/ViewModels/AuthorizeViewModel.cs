@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace PFA.Server.ViewModels;
 
 public class AuthorizeViewModel

@@ -1,6 +1,4 @@
-using OpenIddict.Abstractions;
-using PFA.Server.Data;
-using static OpenIddict.Abstractions.OpenIddictConstants;
+namespace PFA.Server.Workers;
 
 public class Worker : IHostedService
 {
