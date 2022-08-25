@@ -1,4 +1,4 @@
-namespace PFA.Identity.Extensions;
+namespace PAD.Identity.Extensions;
 
 public static class ServiceCollectionExtensions
 {

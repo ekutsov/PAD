@@ -1,4 +1,4 @@
-namespace PFA.Identity.Models;
+namespace PAD.Identity.Models;
 
 public class ApplicationUser: IdentityUser
 {

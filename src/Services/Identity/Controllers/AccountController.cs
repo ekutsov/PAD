@@ -1,4 +1,4 @@
-namespace PFA.Identity.Controllers;
+namespace PAD.Identity.Controllers;
 
 [Route("account")]
 public class AccountController : Controller

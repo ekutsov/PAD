@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "PFA.Client": {
+    "PAD.Client": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

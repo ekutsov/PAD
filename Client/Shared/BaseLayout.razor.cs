@@ -1,6 +1,4 @@
-using PFA.Client.Services;
-
-namespace PFA.Client.Shared;
+namespace PAD.Client.Shared;
 
 public partial class BaseLayout
 {

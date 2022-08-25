@@ -1,9 +1,9 @@
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PFA.Identity.Models;
+using PAD.Identity.Models;
 
-namespace PFA.Identity.Data;
+namespace PAD.Identity.Data;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {

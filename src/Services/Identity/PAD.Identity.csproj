@@ -3,7 +3,9 @@
     <NoWarn>CS0168,CS1998,BL9993,CS0649,CS0436,0436</NoWarn>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>PAD.Identity</AssemblyName>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'PAD.Identity' " />
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.8" />
@@ -23,6 +25,6 @@
     <PackageReference Include="Quartz.Extensions.Hosting" Version="3.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Client\PFA.Client.csproj" />
+    <ProjectReference Include="..\..\..\Client\PAD.Client.csproj" />
   </ItemGroup>
 </Project>

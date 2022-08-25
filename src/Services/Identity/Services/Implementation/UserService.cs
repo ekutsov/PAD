@@ -1,4 +1,4 @@
-namespace PFA.Identity.Services;
+namespace PAD.Identity.Services;
 
 public class UserService : IUserService
 {

@@ -4,6 +4,7 @@
     <NoWarn>CS0168,CS1998,BL9993,CS0649,CS0436,0436</NoWarn>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>PAD.Client</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

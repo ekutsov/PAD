@@ -1,4 +1,4 @@
-namespace PFA.Client.Services;
+namespace PAD.Client.Services;
 
 public interface ILocalStorageService
 {

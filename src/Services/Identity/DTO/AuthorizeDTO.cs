@@ -1,4 +1,4 @@
-namespace PFA.Identity.DTO;
+namespace PAD.Identity.DTO;
 
 public class AuthorizeDTO
 {

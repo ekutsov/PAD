@@ -1,3 +1,5 @@
+using PAD.Identity.Workers;
+
 internal class Program
 {
     private static void Main(string[] args)

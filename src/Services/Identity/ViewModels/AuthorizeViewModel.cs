@@ -1,4 +1,4 @@
-namespace PFA.Identity.ViewModels;
+namespace PAD.Identity.ViewModels;
 
 public class AuthorizeViewModel
 {

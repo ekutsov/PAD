@@ -1,4 +1,4 @@
-namespace PFA.Identity.Workers;
+namespace PAD.Identity.Workers;
 
 public class Worker : IHostedService
 {
@@ -16,21 +16,21 @@ public class Worker : IHostedService
 
         var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
 
-        if (await manager.FindByClientIdAsync("pfa-blazor-client") is null)
+        if (await manager.FindByClientIdAsync("pad-blazor-client") is null)
         {
             await manager.CreateAsync(new OpenIddictApplicationDescriptor
             {
-                ClientId = "pfa-blazor-client",
+                ClientId = "pad-blazor-client",
                 ConsentType = ConsentTypes.Explicit,
                 DisplayName = "Blazor client application",
                 Type = ClientTypes.Public,
                 PostLogoutRedirectUris =
                 {
-                    new Uri("https://localhost:44310/authentication/logout-callback")
+                    new Uri("https://localhost:5001/authentication/logout-callback")
                 },
                 RedirectUris =
                 {
-                    new Uri("https://localhost:44310/authentication/login-callback")
+                    new Uri("https://localhost:5001/authentication/login-callback")
                 },
                 Permissions =
                 {

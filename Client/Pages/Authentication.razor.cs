@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Radzen;
 using Radzen.Blazor;
 
-namespace PFA.Client.Pages
+namespace PAD.Client.Pages
 {
     public partial class Authentication
     {

@@ -1,4 +1,4 @@
-namespace PFA.Client.Models;
+namespace PAD.Client.Models;
 
 public class User
 {

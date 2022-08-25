@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Radzen;
-
-using PFA.Client;
+using PAD.Client;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -16,23 +14,23 @@ builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
 
-builder.Services.AddHttpClient("PFA.IdentityAPI")
+builder.Services.AddHttpClient("PAD.IdentityAPI")
     .ConfigureHttpClient(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
 builder.Services.AddScoped(provider =>
 {
     var factory = provider.GetRequiredService<IHttpClientFactory>();
-    return factory.CreateClient("PFA.IdentityAPI");
+    return factory.CreateClient("PAD.IdentityAPI");
 });
 
 builder.Services.AddOidcAuthentication(options =>
 {
-    options.ProviderOptions.ClientId = "pfa-blazor-client";
-    options.ProviderOptions.Authority = "https://localhost:44310/";
+    options.ProviderOptions.ClientId = "pad-blazor-client";
+    options.ProviderOptions.Authority = "https://localhost:5001/";
     options.ProviderOptions.ResponseType = "code";
     options.ProviderOptions.ResponseMode = "query";
-    options.AuthenticationPaths.RemoteRegisterPath = "https://localhost:44310/Identity/Account/Register";
+    options.AuthenticationPaths.RemoteRegisterPath = "https://localhost:5001/Identity/Account/Register";
     options.ProviderOptions.DefaultScopes.Add("roles");
     options.UserOptions.RoleClaim = "role";
 });

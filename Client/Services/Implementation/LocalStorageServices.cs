@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.JSInterop;
 
-namespace PFA.Client.Services;
+namespace PAD.Client.Services;
 
 public class LocalStorageService : ILocalStorageService
 {

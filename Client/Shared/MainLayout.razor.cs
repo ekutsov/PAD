@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components;
 using Radzen.Blazor;
+using System.Threading.Tasks;
+using System;
 
-namespace PFA.Client.Shared;
+namespace PAD.Client.Shared;
 
 public partial class MainLayout
 {
