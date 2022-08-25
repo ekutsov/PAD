@@ -1,0 +1,36 @@
+@page "/"
+
+<PageTitle>Finance</PageTitle>
+<RadzenContent Container="main">
+    <RadzenHeading Size="H1" Text="Finance" />
+    <div class="row">
+    <RadzenCard class="col" Style="margin: 0 7.5px 0 15px; padding: 20px 15px">
+        <RadzenChart>
+            <RadzenDonutSeries Data="@revenue" CategoryProperty="Quarter" ValueProperty="Revenue">
+                <ChildContent>
+                    <RadzenSeriesDataLabels Visible="@showDataLabels" />
+                </ChildContent>
+                <TitleTemplate>
+                    <div class="rz-donut-content">
+                        <div>Categories</div>
+                    </div>
+                </TitleTemplate>
+            </RadzenDonutSeries>
+        </RadzenChart>
+    </RadzenCard>
+    <RadzenCard class="col" Style="margin: 0 15px 0 7.5px; padding: 20px 15px">
+        <RadzenChart>
+            <RadzenDonutSeries Data="@revenue" CategoryProperty="Quarter" ValueProperty="Revenue">
+                <ChildContent>
+                    <RadzenSeriesDataLabels Visible="@showDataLabels" />
+                </ChildContent>
+                <TitleTemplate>
+                    <div class="rz-donut-content">
+                        <div>Categories</div>
+                    </div>
+                </TitleTemplate>
+            </RadzenDonutSeries>
+        </RadzenChart>
+    </RadzenCard>
+    </div>
+</RadzenContent>

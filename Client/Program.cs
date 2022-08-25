@@ -16,14 +16,14 @@ builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
 
-builder.Services.AddHttpClient("PFA.ServerAPI")
+builder.Services.AddHttpClient("PFA.IdentityAPI")
     .ConfigureHttpClient(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
 builder.Services.AddScoped(provider =>
 {
     var factory = provider.GetRequiredService<IHttpClientFactory>();
-    return factory.CreateClient("PFA.ServerAPI");
+    return factory.CreateClient("PFA.IdentityAPI");
 });
 
 builder.Services.AddOidcAuthentication(options =>

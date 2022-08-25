@@ -14,7 +14,6 @@ public partial class MainLayout
     protected SignOutSessionStateManager SignOutManager { get; set; }
 
     [Inject]
-
     protected AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
     private string UserName { get; set; }
