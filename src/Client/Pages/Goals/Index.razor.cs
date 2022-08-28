@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 
-namespace PAD.Client.Pages;
+namespace PAD.Client.Pages.Goals;
 
 [Authorize]
-public partial class Goals
+public partial class Index
 {
 
 }

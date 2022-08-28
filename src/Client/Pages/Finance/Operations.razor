@@ -1,0 +1,30 @@
+@namespace PAD.Client.Finance
+
+@page "/finance/operations"
+
+<PageTitle>Operations</PageTitle>
+<RadzenContent Container="main">
+    <RadzenHeading Size="H1" Text="Operations" />
+    <RadzenDataGrid Data="@OrderDetails" LoadData="@LoadData" TItem="OrderDetail" Count="@count"
+        AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+        LogicalFilterOperator="LogicalFilterOperator.Or" AllowSorting="true" AllowPaging="true"
+        PagerPosition="PagerPosition.Bottom" PagerHorizontalAlign="HorizontalAlign.Justify"
+        PageSizeOptions="@PageSizeOptions" ShowPagingSummary="true"
+        PagingSummaryFormat="Displaying page {0} of {1} (total {2} records)">
+        <Columns>
+            <RadzenDataGridColumn TItem="OrderDetail" Property="OrderID" Title="OrderID" />
+            <RadzenDataGridColumn TItem="OrderDetail" Property="ProductID" Title="ProductID" />
+            <RadzenDataGridColumn TItem="OrderDetail" Property="UnitPrice" Title="Unit Price">
+                <Template Context="detail">
+                    @String.Format(new System.Globalization.CultureInfo("ru-RU"), "{0:C2}", detail.UnitPrice)
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="OrderDetail" Property="Quantity" Title="Quantity" />
+            <RadzenDataGridColumn TItem="OrderDetail" Property="Discount" Title="Discount">
+                <Template Context="detail">
+                    @String.Format("{0}%", detail.Discount * 100)
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+</RadzenContent>

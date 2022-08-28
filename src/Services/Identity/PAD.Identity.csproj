@@ -24,7 +24,4 @@
     <PackageReference Include="OpenIddict.Quartz" Version="4.0.0-preview3.22422.72" />
     <PackageReference Include="Quartz.Extensions.Hosting" Version="3.4.0" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Client\PAD.Client.csproj" />
-  </ItemGroup>
 </Project>

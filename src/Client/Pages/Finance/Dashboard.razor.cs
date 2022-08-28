@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 
 namespace PAD.Client.Pages;
 
 [Authorize]
-public partial class Finance
+[Route("finance/dashboard")]
+public partial class Dashboard
 {
     public bool showDataLabels = false;
 

@@ -1,7 +1,4 @@
-
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using PAD.Identity.Models;
 
 namespace PAD.Identity.Data;
 

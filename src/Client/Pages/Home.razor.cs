@@ -10,7 +10,7 @@ using Radzen.Blazor;
 
 namespace PAD.Client.Pages
 {
-    public partial class Diary
+    public partial class Home
     {
         [Inject]
         protected IJSRuntime JSRuntime { get; set; }

@@ -26,8 +26,12 @@
         </div>
     </RadzenHeader>
     <RadzenSidebar Expanded="@isSidebarExpanded">
-        <RadzenPanelMenu style="height: 100%; display: flex; flex-direction: column">
-            <RadzenPanelMenuItem Text="Finance" Icon="payments" Path="/"></RadzenPanelMenuItem>
+        <RadzenPanelMenu Match="Microsoft.AspNetCore.Components.Routing.NavLinkMatch.Prefix">
+            <RadzenPanelMenuItem Text="Home" Path="/" Icon="home"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Finance" Icon="payments">
+                <RadzenPanelMenuItem Text="Dashboard" Path="/finance/dashboard" Icon="dashboard"></RadzenPanelMenuItem>
+                <RadzenPanelMenuItem Text="Operations" Path="/finance/operations" Icon="money"></RadzenPanelMenuItem>
+            </RadzenPanelMenuItem>
             <RadzenPanelMenuItem Text="Goals" Path="/goals" Icon="flag" />
             <RadzenPanelMenuItem Icon="import_contacts" Text="Diary" Path="/diary"></RadzenPanelMenuItem>
         </RadzenPanelMenu>

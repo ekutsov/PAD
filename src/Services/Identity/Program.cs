@@ -1,35 +1,20 @@
-using PAD.Identity.Workers;
-
 internal class Program
 {
     private static void Main(string[] args)
     {
         // Add services to the container.
-
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
-        string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-        builder.Services.AddDbContext(connectionString);
-
+        builder.Services.AddDbContext(builder.Configuration.GetConnectionString("DefaultConnection"));
         builder.Services.AddIdentity();
-
         builder.Services.AddQuartz();
-
         builder.Services.AddOpenIdAuth();
-
         builder.Services.AddAppServices();
-
         builder.Services.AddControllersWithViews();
-
         builder.Services.AddRazorPages();
-
         builder.Services.AddHostedService<Worker>();
 
         // Configure the HTTP request pipeline.
-
         WebApplication app = builder.Build();
-
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
@@ -42,23 +27,14 @@ internal class Program
         }
 
         app.UseHttpsRedirection();
-
         app.UseBlazorFrameworkFiles();
-
         app.UseStaticFiles();
-
         app.UseRouting();
-
         app.UseAuthentication();
-
         app.UseAuthorization();
-
         app.MapRazorPages();
-
         app.MapControllers();
-
         app.MapFallbackToFile("index.html");
-
         app.Run();
     }
 }
