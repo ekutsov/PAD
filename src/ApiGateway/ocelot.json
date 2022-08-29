@@ -4,15 +4,15 @@
   },
   "Routes": [
     {
-      "DownstreamPathTemplate": "/connect/{everything}",
+      "DownstreamPathTemplate": "/api/weather",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5001
+          "Port": 5002
         }
       ],
-      "UpstreamPathTemplate": "/oauth-api/{everything}"
+      "UpstreamPathTemplate": "/api/v1/finance/weather"
     }
   ]
 }
