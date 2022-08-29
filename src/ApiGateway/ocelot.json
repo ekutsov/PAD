@@ -1,18 +1,18 @@
 {
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:44379"
+    "BaseUrl": "https://localhost:5000"
   },
   "Routes": [
     {
-      "DownstreamPathTemplate": "/connect/{OAUTH}",
+      "DownstreamPathTemplate": "/connect/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 44370
+          "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/oauth-api/{OAUTH}"
+      "UpstreamPathTemplate": "/oauth-api/{everything}"
     }
   ]
 }

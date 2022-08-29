@@ -12,11 +12,11 @@ public class Worker : IHostedService
         await using var scope = _serviceProvider.CreateAsyncScope();
 
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        await context.Database.EnsureCreatedAsync();
+        await context.Database.EnsureCreatedAsync(cancellationToken);
 
         var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
 
-        if (await manager.FindByClientIdAsync("pad-blazor-client") is null)
+        if (await manager.FindByClientIdAsync("pad-blazor-client", cancellationToken) is null)
         {
             await manager.CreateAsync(new OpenIddictApplicationDescriptor
             {
@@ -26,11 +26,11 @@ public class Worker : IHostedService
                 Type = ClientTypes.Public,
                 PostLogoutRedirectUris =
                 {
-                    new Uri("https://localhost:5001/authentication/logout-callback")
+                    new Uri("https://localhost:3000/authentication/logout-callback")
                 },
                 RedirectUris =
                 {
-                    new Uri("https://localhost:5001/authentication/login-callback")
+                    new Uri("https://localhost:3000/authentication/login-callback"),
                 },
                 Permissions =
                 {
@@ -48,7 +48,7 @@ public class Worker : IHostedService
                 {
                     Requirements.Features.ProofKeyForCodeExchange
                 }
-            });
+            }, cancellationToken);
         }
 
     }

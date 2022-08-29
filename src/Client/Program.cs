@@ -11,21 +11,22 @@ builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
-builder.Services.AddHttpClient("PAD.IdentityAPI").ConfigureHttpClient(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-builder.Services.AddScoped(provider =>
-{
-    var factory = provider.GetRequiredService<IHttpClientFactory>();
-    return factory.CreateClient("PAD.IdentityAPI");
-});
+/*builder.Services.AddHttpClient("PAD.IdentityAPI")
+    .ConfigureHttpClient(client => client.BaseAddress = new Uri("https://localhost:5001"))
+    .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+builder.Services.AddScoped(provider => 
+    provider.GetRequiredService<IHttpClientFactory>().CreateClient("PAD.IdentityAPI"));*/
+
 builder.Services.AddOidcAuthentication(options =>
 {
+    options.ProviderOptions.Authority = "https://localhost:5001";
     options.ProviderOptions.ClientId = "pad-blazor-client";
-    options.ProviderOptions.Authority = "https://localhost:5001/";
     options.ProviderOptions.ResponseType = "code";
     options.ProviderOptions.ResponseMode = "query";
     options.AuthenticationPaths.RemoteRegisterPath = "https://localhost:5001/Identity/Account/Register";
     options.ProviderOptions.DefaultScopes.Add("roles");
     options.UserOptions.RoleClaim = "role";
 });
-builder.Services.AddTransient(sp => new HttpClient{BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
+
 await builder.Build().RunAsync();
