@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PFA.Finance.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/weather")]
 public class WeatherForecastController : ControllerBase
 {
