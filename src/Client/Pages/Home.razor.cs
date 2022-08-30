@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Radzen;
 using Radzen.Blazor;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PAD.Client.Pages
 {
+    [Authorize]
     public partial class Home
     {
         [Inject]

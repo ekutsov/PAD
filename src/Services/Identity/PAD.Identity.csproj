@@ -7,15 +7,17 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'PAD.Identity' " />
   <ItemGroup>
+    <PackageReference Include="AspNet.Security.OAuth.Yandex" Version="6.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.8" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.6" />
     <PackageReference Include="OpenIddict.Abstractions" Version="4.0.0-preview3.22422.72" />
@@ -23,5 +25,6 @@
     <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="4.0.0-preview3.22422.72" />
     <PackageReference Include="OpenIddict.Quartz" Version="4.0.0-preview3.22422.72" />
     <PackageReference Include="Quartz.Extensions.Hosting" Version="3.4.0" />
+    <PackageReference Include="Radzen.Blazor" Version="3.20.8" />
   </ItemGroup>
 </Project>
