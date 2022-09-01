@@ -18,7 +18,7 @@ public partial class MainLayout
 
     private string UserName { get; set; }
 
-    protected bool isSidebarExpanded = true;
+    protected bool isSidebarExpanded = false;
 
     protected override async Task OnInitializedAsync()
     {
