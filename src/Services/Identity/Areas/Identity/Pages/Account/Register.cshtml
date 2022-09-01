@@ -1,0 +1,69 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Sign up";
+}
+
+<div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <h1 class="mb-4" style="text-align: center;">Sign up to PAD</h1>
+    <div class="rz-card card form-group" style="width: 300px;">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div class="rz-form">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <label asp-for="Input.Email" class="col-form-label" style="padding-left: 15px;"></label>
+                    <div class="col">
+                        <input class="rz-textbox" asp-for="Input.Email" autocomplete="username" aria-required="true" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label asp-for="Input.Password" class="col-form-label" style="padding-left: 15px;"></label>
+                    <div class="col">
+                        <input class="rz-textbox" asp-for="Input.Password" autocomplete="new-password"
+                            aria-required="true" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label asp-for="Input.ConfirmPassword" class="col-form-label" style="padding-left: 15px;"></label>
+                    <div class="col">
+                        <input class="rz-textbox" asp-for="Input.ConfirmPassword" autocomplete="new-password" aria-required="true" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+                <div>
+                    <button id="registerSubmit" type="submit" class="rz-button rz-button-md btn-primary w-100">Sign up</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    @if ((Model.ExternalLogins?.Count ?? 0) != 0)
+    {
+        <div class="rz-card card form-group" style="width: 300px;">
+            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post"
+            class="form-horizontal">
+                <div>
+                    <p style="display: flex; justify-content: space-beetween;">
+                        @foreach (var provider in Model.ExternalLogins)
+                        {
+                            <button type="submit" class="rz-button rz-button-md btn-light" name="provider" value="@provider.Name"
+                                title="Log in using your @provider.DisplayName account">
+                                <i class="fa-brands fa-@provider.DisplayName.ToLower()"></i>
+                            </button>
+                        }
+                    </p>
+                </div>
+            </form>
+        </div>
+    }
+
+    <div class="rz-card card" style="width: 300px;">
+        <div class="register">
+            Already have an account?
+            <a class="rz-button rz-button-md btn-secondary pad-button" asp-page="./Login"
+                asp-route-returnUrl="@Model.ReturnUrl"><span class="rz-button-text">Sign in</span></a>
+        </div>
+    </div>
+</div>

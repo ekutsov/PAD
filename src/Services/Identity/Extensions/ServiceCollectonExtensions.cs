@@ -33,6 +33,12 @@ public static class ServiceCollectionExtensions
 
     public static void AddOpenIdAuth(this IServiceCollection services)
     {
+        services.AddAuthentication()
+            .AddYandex(options => {
+                options.ClientId = "b86d2ba63b254a1eadcbe23e1832d5b8";
+                options.ClientSecret = "a260bbfc56a44a3a9c4aa9cc7e2e94f2";
+                options.CallbackPath = "/yandex-signin";
+            });
         services.AddOpenIddict()
             .AddCore(options =>
             {
