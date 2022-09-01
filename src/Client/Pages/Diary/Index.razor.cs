@@ -1,9 +1,11 @@
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components;
 using Radzen;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PAD.Client.Pages.Diary
 {
+    [Authorize]
     public partial class Index
     {
         [Inject]

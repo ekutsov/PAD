@@ -11,12 +11,12 @@ builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
-/*builder.Services.AddHttpClient("PAD.IdentityAPI")
-    .ConfigureHttpClient(client => client.BaseAddress = new Uri("https://localhost:5001"))
+builder.Services.AddHttpClient("PAD.APIGateway")
+    .ConfigureHttpClient(client => client.BaseAddress = new Uri("https://localhost:5000"))
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-builder.Services.AddScoped(provider => 
-    provider.GetRequiredService<IHttpClientFactory>().CreateClient("PAD.IdentityAPI"));*/
+builder.Services.AddScoped(provider =>
+    provider.GetRequiredService<IHttpClientFactory>().CreateClient("PAD.APIGateway"));
 
 builder.Services.AddOidcAuthentication(options =>
 {

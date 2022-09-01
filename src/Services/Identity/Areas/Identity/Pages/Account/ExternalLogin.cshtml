@@ -1,0 +1,27 @@
+﻿@page
+@model ExternalLoginModel
+@{
+    ViewData["Title"] = "Sign up";
+}
+
+<div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <h1 class="mb-4" style="text-align: center;">Sign up to PAD</h1>
+    <div class="rz-card card form-group" style="width: 300px;">
+        <h3>Associate your @Model.ProviderDisplayName account.</h3>
+        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div class="rz-form">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row" style="margin-bottom: 1.5rem;">
+                    <label asp-for="Input.Email" class="col-form-label" style="padding-left: 15px;"></label>
+                    <div class="col">
+                        <input class="rz-textbox" asp-for="Input.Email" autocomplete="email" aria-required="true" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="rz-button rz-button-md btn-primary w-100">Sign up</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
