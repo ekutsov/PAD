@@ -1,19 +1,18 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:51117",
-      "sslPort": 44379
+      "applicationUrl": "http://localhost:63476",
+      "sslPort": 44370
     }
   },
   "profiles": {
-    "PAD.APIGateway": {
+    "PAD.Identity.API": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": false,
-      "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:5000",
+      "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
+      "applicationUrl": "https://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -21,7 +20,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": false,
-      "launchUrl": "swagger",
+      "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

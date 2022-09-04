@@ -5,7 +5,7 @@ namespace PFA.Finance.Controllers;
 
 [ApiController]
 [Authorize]
-[Route("api/weather")]
+[Route("api/v1/weather")]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <NoWarn>CS0168,CS1998,BL9993,CS0649,CS0436,0436</NoWarn>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>PAD.Identity.API</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'PAD.Identity.API' " />
+  <ItemGroup>
+    <PackageReference Include="AspNet.Security.OAuth.Yandex" Version="6.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.6" />
+    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="4.0.0-preview3.22422.72" />
+    <PackageReference Include="OpenIddict.Quartz" Version="4.0.0-preview3.22422.72" />
+    <PackageReference Include="Quartz.Extensions.Hosting" Version="3.4.0" />
+    <PackageReference Include="Radzen.Blazor" Version="3.20.9" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Identity.Core\PAD.Identity.Core.csproj" />
+  </ItemGroup>
+</Project>
