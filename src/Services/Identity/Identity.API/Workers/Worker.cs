@@ -23,11 +23,11 @@ public class Worker : IHostedService
         {
             var manager = provider.GetRequiredService<IOpenIddictApplicationManager>();
 
-            if (await manager.FindByClientIdAsync("6f916e05-7159-4ada-9fdf-5eb4976d14aa", cancellationToken) is null)
+            if (await manager.FindByClientIdAsync("web_client", cancellationToken) is null)
             {
                 await manager.CreateAsync(new OpenIddictApplicationDescriptor
                 {
-                    ClientId = "6f916e05-7159-4ada-9fdf-5eb4976d14aa",
+                    ClientId = "web_client",
                     ConsentType = ConsentTypes.Explicit,
                     DisplayName = "Blazor client application",
                     Type = ClientTypes.Public,
@@ -59,7 +59,7 @@ public class Worker : IHostedService
                 }, cancellationToken);
             }
 
-            if (await manager.FindByClientIdAsync("finance_service") == null)
+            if (await manager.FindByClientIdAsync("finance_service") is null)
             {
                 var descriptor = new OpenIddictApplicationDescriptor
                 {
@@ -78,8 +78,8 @@ public class Worker : IHostedService
         static async Task RegisterScopesAsync(IServiceProvider provider)
         {
             var manager = provider.GetRequiredService<IOpenIddictScopeManager>();
-
-            if (await manager.FindByNameAsync("api") == null)
+            
+            if (await manager.FindByNameAsync("api") is null)
             {
                 await manager.CreateAsync(new OpenIddictScopeDescriptor
                 {

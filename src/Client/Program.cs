@@ -15,7 +15,7 @@ builder.Services.AddScoped(provider =>
 builder.Services.AddOidcAuthentication(options =>
 {
     options.ProviderOptions.Authority = "https://localhost:5001";
-    options.ProviderOptions.ClientId = "6f916e05-7159-4ada-9fdf-5eb4976d14aa";
+    options.ProviderOptions.ClientId = "web_client";
     options.ProviderOptions.ResponseType = "code";
     options.ProviderOptions.ResponseMode = "query";
     options.AuthenticationPaths.RemoteRegisterPath = "https://localhost:5001/Identity/Account/Register";
