@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Radzen;
 using Radzen.Blazor;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace PAD.Client.Pages
 {
@@ -31,5 +32,13 @@ namespace PAD.Client.Pages
 
         [Inject]
         protected NotificationService NotificationService { get; set; }
+
+        [Inject]
+        protected HttpClient Http { get; set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await Http.GetAsync("finance/weather");
+        }
     }
 }

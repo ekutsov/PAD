@@ -1,19 +1,13 @@
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Radzen;
-using PAD.Client;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
+
 builder.RootComponents.Add<HeadOutlet>("head::after");
-builder.Services.AddScoped<DialogService>();
-builder.Services.AddScoped<NotificationService>();
-builder.Services.AddScoped<TooltipService>();
-builder.Services.AddScoped<ContextMenuService>();
+
 builder.Services.AddHttpClient("PAD.APIGateway")
-    .ConfigureHttpClient(client => client.BaseAddress = new Uri("https://localhost:5000"))
-    .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    .ConfigureHttpClient(client => client.BaseAddress = new Uri("https://localhost:5000/api/v1/"))
+    .AddHttpMessageHandler(sp => sp.GetService<AuthorizationMessageHandler>()
+        .ConfigureHandler((new[] { "https://localhost:5000" })));
 
 builder.Services.AddScoped(provider =>
     provider.GetRequiredService<IHttpClientFactory>().CreateClient("PAD.APIGateway"));
@@ -21,12 +15,20 @@ builder.Services.AddScoped(provider =>
 builder.Services.AddOidcAuthentication(options =>
 {
     options.ProviderOptions.Authority = "https://localhost:5001";
-    options.ProviderOptions.ClientId = "pad-blazor-client";
+    options.ProviderOptions.ClientId = "web_client";
     options.ProviderOptions.ResponseType = "code";
     options.ProviderOptions.ResponseMode = "query";
     options.AuthenticationPaths.RemoteRegisterPath = "https://localhost:5001/Identity/Account/Register";
     options.ProviderOptions.DefaultScopes.Add("roles");
     options.UserOptions.RoleClaim = "role";
 });
+
+builder.Services.AddScoped<DialogService>();
+
+builder.Services.AddScoped<NotificationService>();
+
+builder.Services.AddScoped<TooltipService>();
+
+builder.Services.AddScoped<ContextMenuService>();
 
 await builder.Build().RunAsync();

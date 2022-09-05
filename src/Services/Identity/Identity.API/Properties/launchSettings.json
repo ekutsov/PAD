@@ -1,0 +1,29 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:63476",
+      "sslPort": 44370
+    }
+  },
+  "profiles": {
+    "PAD.Identity.API": {
+      "commandName": "Project",
+      "applicationUrl": "https://localhost:5001",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "YANDEX_OAUTH_CLIENT_ID": "b86d2ba63b254a1eadcbe23e1832d5b8",
+        "YANDEX_OAUTH_CLIENT_SECRET": "a260bbfc56a44a3a9c4aa9cc7e2e94f2",
+        "YANDEX_OAUTH_CALLBACK_PATH": "/yandex-signin"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
