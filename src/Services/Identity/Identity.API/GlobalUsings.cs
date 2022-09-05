@@ -12,3 +12,7 @@ global using Quartz;
 global using System.ComponentModel.DataAnnotations;
 global using System.Security.Claims;
 global using static OpenIddict.Abstractions.OpenIddictConstants;
+global using Microsoft.Extensions.Options;
+global using PAD.Identity.Domain.Settings;
+global using PAD.Identity.Infrastructure.Data;
+global using PAD.Identity.Infrastructure.Models;

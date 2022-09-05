@@ -1,4 +1,4 @@
-namespace PAD.Finance.Models;
+namespace PAD.Finance.Infrastructure.Models;
 
 public class ExpenseCategory
 {

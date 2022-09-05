@@ -1,53 +1,58 @@
-using PAD.Identity.Infrastructure.Data;
-using PAD.Identity.Infrastructure.Models;
-
 namespace PAD.Identity.API.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddDbContext(this IServiceCollection services, string connectionString)
+    public static void AddOptions(this WebApplicationBuilder builder)
     {
-        services.AddDbContext<ApplicationDbContext>(options =>
+        builder.Services.ConfigureOptions<YandexOAuthConfiguration>();
+    }
+
+    public static void AddDbContext(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseNpgsql(connectionString);
+            options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
             options.UseOpenIddict();
         });
     }
 
-    public static void AddIdentity(this IServiceCollection services)
+    public static void AddIdentity(this WebApplicationBuilder builder)
     {
-        services.AddIdentity<ApplicationUser, IdentityRole>()
+        builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
              .AddEntityFrameworkStores<ApplicationDbContext>()
              .AddDefaultTokenProviders()
              .AddDefaultUI();
     }
 
-    public static void AddQuartz(this IServiceCollection services)
+    public static void AddQuartz(this WebApplicationBuilder builder)
     {
-        services.AddQuartz(options =>
+        builder.Services.AddQuartz(options =>
         {
             options.UseMicrosoftDependencyInjectionJobFactory();
             options.UseSimpleTypeLoader();
             options.UseInMemoryStore();
         });
 
-        services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
+        builder.Services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
     }
 
-    public static void AddExternalAuthentication(this IServiceCollection services)
+    public static void AddExternalAuthentication(this WebApplicationBuilder builder)
     {
-        services.AddAuthentication()
+        YandexOAuthOptions yandexOptions = builder.Services.BuildServiceProvider()
+            .GetRequiredService<IOptions<YandexOAuthOptions>>().Value;
+
+        builder.Services.AddAuthentication()
             .AddYandex(options =>
             {
-                options.ClientId = "b86d2ba63b254a1eadcbe23e1832d5b8";
-                options.ClientSecret = "a260bbfc56a44a3a9c4aa9cc7e2e94f2";
-                options.CallbackPath = "/yandex-signin";
+                options.ClientId = yandexOptions.ClientId;
+                options.ClientSecret = yandexOptions.ClientSecret;
+                options.CallbackPath = yandexOptions.CallbackPath;
             });
     }
 
-    public static void AddOpenIdAuth(this IServiceCollection services)
+    public static void AddOpenIdConnectAuthentication(this WebApplicationBuilder builder)
     {
-        services.AddOpenIddict()
+        builder.Services.AddOpenIddict()
             .AddCore(options =>
             {
                 options.UseEntityFrameworkCore()
@@ -75,7 +80,7 @@ public static class ServiceCollectionExtensions
                     .EnableLogoutEndpointPassthrough()
                     .EnableStatusCodePagesIntegration()
                     .EnableTokenEndpointPassthrough();
-                
+
                 options.UseReferenceAccessTokens()
                     .UseReferenceRefreshTokens();
             })
@@ -86,11 +91,11 @@ public static class ServiceCollectionExtensions
             });
     }
 
-    public static void AddAppServices(this IServiceCollection services)
+    public static void AddServices(this WebApplicationBuilder builder)
     {
-        services.AddScoped<IApplicationService, ApplicationService>();
-        services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IScopeService, ScopeService>();
-        services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IApplicationService, ApplicationService>()
+                        .AddScoped<IAuthService, AuthService>()
+                        .AddScoped<IScopeService, ScopeService>()
+                        .AddScoped<IUserService, UserService>();
     }
 }

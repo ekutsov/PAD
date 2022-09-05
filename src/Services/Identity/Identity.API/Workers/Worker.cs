@@ -1,5 +1,3 @@
-using PAD.Identity.Infrastructure.Data;
-
 namespace PAD.Identity.API.Workers;
 
 public class Worker : IHostedService
@@ -21,7 +19,7 @@ public class Worker : IHostedService
 
         static async Task RegisterApplicationsAsync(IServiceProvider provider, CancellationToken cancellationToken)
         {
-            var manager = provider.GetRequiredService<IOpenIddictApplicationManager>();
+            IOpenIddictApplicationManager manager = provider.GetRequiredService<IOpenIddictApplicationManager>();
 
             if (await manager.FindByClientIdAsync("web_client", cancellationToken) is null)
             {
@@ -61,14 +59,11 @@ public class Worker : IHostedService
 
             if (await manager.FindByClientIdAsync("finance_service") is null)
             {
-                var descriptor = new OpenIddictApplicationDescriptor
+                OpenIddictApplicationDescriptor descriptor = new()
                 {
                     ClientId = "finance_service",
                     ClientSecret = "846B62D0-DEF9-4215-A99D-86E6B8DAB342",
-                    Permissions =
-                    {
-                        Permissions.Endpoints.Introspection
-                    }
+                    Permissions = { Permissions.Endpoints.Introspection }
                 };
 
                 await manager.CreateAsync(descriptor, cancellationToken);
@@ -77,8 +72,8 @@ public class Worker : IHostedService
 
         static async Task RegisterScopesAsync(IServiceProvider provider)
         {
-            var manager = provider.GetRequiredService<IOpenIddictScopeManager>();
-            
+            IOpenIddictScopeManager manager = provider.GetRequiredService<IOpenIddictScopeManager>();
+
             if (await manager.FindByNameAsync("api") is null)
             {
                 await manager.CreateAsync(new OpenIddictScopeDescriptor
