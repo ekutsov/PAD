@@ -12,7 +12,12 @@
       "commandName": "Project",
       "applicationUrl": "https://localhost:5002",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "API_GATEWAY_ORIGIN": "https://localhost:5000",
+        "OAUTH_ISSUER": "https://localhost:5001",
+        "OAUTH_AUDIENCE": "finance_service",
+        "OAUTH_CLIENT_ID": "finance_service",
+        "OAUTH_CLIENT_SECRET": "846B62D0-DEF9-4215-A99D-86E6B8DAB342"
       }
     },
     "IIS Express": {

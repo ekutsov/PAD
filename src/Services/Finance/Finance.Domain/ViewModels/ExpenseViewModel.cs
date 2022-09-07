@@ -1,0 +1,16 @@
+namespace PAD.Finance.Domain.ViewModels;
+
+public class ExpenseViewModel
+{
+    public string Id { get; set; }
+
+    public DateTime CreatedDate { get; set; }
+
+    public DateTime UpdatedDate { get; set; }
+
+    public string Description { get; set; }
+
+    public double Amount { get; set; }
+
+    public ExpenseCategoryViewModel Category { get; set; }
+}

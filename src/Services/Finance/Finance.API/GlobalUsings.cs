@@ -1,0 +1,9 @@
+global using PAD.Finance.API.Extensions;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.OpenApi.Models;
+global using OpenIddict.Validation.AspNetCore;
+global using PAD.Finance.Core.Services;
+global using PAD.Finance.Infrastructure.Data;
+global using PAD.Finance.Domain.Settings;
+global using Microsoft.Extensions.Options;
