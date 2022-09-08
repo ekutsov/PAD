@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace PAD.Finance.Infrastructure.Configuration;
 
 public class ExpenseConfiguration : IEntityTypeConfiguration<Expense>

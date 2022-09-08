@@ -8,11 +8,11 @@ namespace PFA.Finance.Controllers;
 public class ExpenseController : BaseController<IExpenseService>
 {
     public ExpenseController(IExpenseService service) : base(service) { }
-    
+
     [HttpGet]
-    public async Task<ActionResult<List<ExpenseViewModel>>> GetAll()
+    public async Task<ActionResult<TableViewModel<ExpenseViewModel>>> GetAll([FromQuery] TableStateDTO tableState)
     {
-        List<ExpenseViewModel> expenses = await _service.GetAllAsync();
+        TableViewModel<ExpenseViewModel> expenses = await _service.GetAllAsync(tableState);
 
         return Json(expenses);
     }

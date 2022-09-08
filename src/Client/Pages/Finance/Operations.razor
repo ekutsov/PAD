@@ -3,27 +3,50 @@
 @page "/finance/operations"
 
 <PageTitle>Operations</PageTitle>
-@* <RadzenContent Container="main">
-    <RadzenCard Style="margin-bottom: 20px">
-        <RadzenHeading Size="H1" Text="Operations" />
-    </RadzenCard>
-</RadzenContent>
-<RadzenCard>
-    <RadzenDataGrid Data="@OrderDetails" LoadData="@LoadData" TItem="ExpenseViewModel" Count="@count"
-                AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                LogicalFilterOperator="LogicalFilterOperator.Or" AllowSorting="true" AllowPaging="true"
-                PagerPosition="PagerPosition.Bottom" PagerHorizontalAlign="HorizontalAlign.Justify"
-                PageSizeOptions="@PageSizeOptions" ShowPagingSummary="true"
-                PagingSummaryFormat="Displaying page {0} of {1} (total {2} records)">
-                <Columns>
-                    <RadzenDataGridColumn TItem="ExpenseViewModel" Property="CategoryName" Title="Category" />
-                    <RadzenDataGridColumn TItem="ExpenseViewModel" Property="Amount" Title="Amount">
-                        <Template Context="detail">
-                            @String.Format(new System.Globalization.CultureInfo("ru-RU"), "{0:C2}", detail.Amount)
-                        </Template>
-                    </RadzenDataGridColumn>
-                    <RadzenDataGridColumn TItem="ExpenseViewModel" Property="Description" Title="Description" />
-                    <RadzenDataGridColumn TItem="ExpenseViewModel" Property="CreatedDate" Title="Date" />
-                </Columns>
-            </RadzenDataGrid>
-</RadzenCard> *@
+
+<MudText Typo="Typo.h5" Style="margin: 24px 0;">Operations</MudText>
+
+<MudTable ServerData="@(new Func<TableState, Task<TableData<ExpenseViewModel>>>(ServerReload))" Hover="true"
+    @ref="table">
+    <ToolBarContent>
+        <MudTextField T="string" Label="Search" ValueChanged="@(s=>OnSearch(s))" Adornment="Adornment.Start"
+            Variant="Variant.Outlined" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small"
+            Margin="Margin.Dense" Class="mt-0"></MudTextField>
+        <MudSpacer />
+        <MudDateRangePicker Label="Period" PickerVariant="PickerVariant.Dialog" DateFormat="dd/MM/yyyy"
+            IconSize="Size.Small" Margin="Margin.Dense" InputVariant="Variant.Outlined" TitleDateFormat="dddd, dd MMMM"
+            @bind-DateRange="_dateRange" />
+        <MudButton @onclick="OpenDialog" Variant="Variant.Outlined" Color="Color.Primary">
+            Add expense
+        </MudButton>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortLabel="CategoryName" T="ExpenseViewModel">Category</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="Description" T="ExpenseViewModel">Description</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="Amount" T="ExpenseViewModel">Amount</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="CreatedDate" T="ExpenseViewModel">Date</MudTableSortLabel>
+        </MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Nr">@context.CategoryName</MudTd>
+        <MudTd DataLabel="Sign">@context.Description</MudTd>
+        <MudTd DataLabel="Name">@context.Amount</MudTd>
+        <MudTd DataLabel="Position">@context.CreatedDate</MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No matching records found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>

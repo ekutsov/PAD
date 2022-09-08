@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PFA.Finance.Controllers;
 
-[ValidateModel]
+// [ValidateModel]
 public abstract class BaseController<TService> : Controller
 {
     protected readonly TService _service;

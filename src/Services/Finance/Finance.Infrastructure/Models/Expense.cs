@@ -1,21 +1,15 @@
 namespace PAD.Finance.Infrastructure.Models;
 
-public class Expense
+public class Expense : BaseEntity
 {
     #region Foreign keys
     /// <summary>
     /// Expense category id
     /// </summary>
     /// <value></value>
-    public string CategoryId { get; set; }
+    public Guid CategoryId { get; set; }
 
     #endregion Foreign keys
-
-    /// <summary>
-    /// Expense unique identifier
-    /// </summary>
-    /// <value></value>
-    public string Id { get; set; }
 
     /// <summary>
     /// Identifier of the user from the identity service that created the expense
@@ -33,7 +27,7 @@ public class Expense
     /// Expense record created date
     /// </summary>
     /// <value></value>
-    protected DateTime CreatedDate { get; set; }
+    public DateTime CreatedDate { get; set; }
 
     /// <summary>
     /// Amount of expense

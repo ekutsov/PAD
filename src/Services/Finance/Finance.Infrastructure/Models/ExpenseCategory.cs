@@ -1,8 +1,6 @@
 namespace PAD.Finance.Infrastructure.Models;
 
-public class ExpenseCategory
+public class ExpenseCategory : BaseEntity
 {
-    public string Id { get; set; }
-
     public string Name { get; set; }
 }

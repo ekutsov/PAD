@@ -1,15 +1,15 @@
 namespace PAD.Finance.Core.Services;
 
-public class ExpenseCategoryService : BaseService
+public class ExpenseCategoryService : BaseService, IExpenseCategoryService
 {
     public ExpenseCategoryService(FinanceDbContext context, IMapper mapper) : base(context, mapper) { }
 
-    public async Task<List<ExpenseViewModel>> GetAllAsync()
+    public async Task<List<ExpenseCategoryViewModel>> GetAllAsync()
     {
-        List<ExpenseViewModel> expenses = await _context.Expsenses
-            .ProjectTo<ExpenseViewModel>(_mapperProvider)
+        List<ExpenseCategoryViewModel> expenseCategories = await _context.ExpsenseCategories
+            .ProjectTo<ExpenseCategoryViewModel>(_mapperProvider)
             .ToListAsync();
 
-        return expenses;
+        return expenseCategories;
     }
 }

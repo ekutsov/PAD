@@ -2,7 +2,7 @@ namespace PAD.Finance.Core.Services;
 
 public interface IExpenseService
 {
-    Task<List<ExpenseViewModel>> GetAllAsync();
+    Task<TableViewModel<ExpenseViewModel>> GetAllAsync(TableStateDTO tableState);
 
     Task<ExpenseViewModel> CreateAsync(ExpenseDTO expenseDTO);
 }

@@ -19,6 +19,7 @@ public static class WebApplicationBuilderExtensions
     public static void AddServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IExpenseService, ExpenseService>();
+        builder.Services.AddScoped<IExpenseCategoryService, ExpenseCategoryService>();
     }
 
     public static void AddAutomapper(this WebApplicationBuilder builder)

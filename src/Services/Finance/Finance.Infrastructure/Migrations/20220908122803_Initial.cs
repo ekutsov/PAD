@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -12,7 +13,7 @@ namespace PAD.Finance.Infrastructure.Migrations
                 name: "ExpsenseCategories",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -24,10 +25,11 @@ namespace PAD.Finance.Infrastructure.Migrations
                 name: "Expsenses",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    CategoryId = table.Column<string>(type: "text", nullable: true),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     AuthorId = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Amount = table.Column<double>(type: "double precision", nullable: false),
                     IsExcluded = table.Column<bool>(type: "boolean", nullable: false)
                 },
@@ -38,7 +40,17 @@ namespace PAD.Finance.Infrastructure.Migrations
                         name: "FK_Expsenses_ExpsenseCategories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "ExpsenseCategories",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "ExpsenseCategories",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("1e61b920-12aa-4093-b009-9ec9194b9bfa"), "Utility bills" },
+                    { new Guid("7b48e3bc-a2e5-4e97-a14f-5baccc826b6f"), "Foodstuff" }
                 });
 
             migrationBuilder.CreateIndex(

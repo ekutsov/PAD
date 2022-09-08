@@ -12,7 +12,7 @@ using PAD.Identity.Infrastructure.Data;
 namespace PAD.Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220905075321_Initial")]
+    [Migration("20220908115916_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

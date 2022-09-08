@@ -1,12 +1,14 @@
-:root { font-family: 'Inter', sans-serif; }
-
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+* {
+    font-family: 'Montserrat', sans-serif !important;
+}
 
 html {
     height: 100vh;
 }
 
-body, .app, .mud-main-content {
+body,
+.app,
+.mud-main-content {
     height: inherit;
 }
 
@@ -49,12 +51,12 @@ a,
     z-index: 1000;
 }
 
-#blazor-error-ui .dismiss {
-    cursor: pointer;
-    position: absolute;
-    right: 0.75rem;
-    top: 0.5rem;
-}
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
 
 .spinner {
     width: 50px;
@@ -62,9 +64,7 @@ a,
     aspect-ratio: 1;
     border-radius: 50%;
     background: #514b82;
-    -webkit-mask:
-        repeating-conic-gradient(#0000 0deg, #000 1deg 70deg, #0000 71deg 90deg),
-        radial-gradient(farthest-side, #0000 calc(100% - var(--b) - 1px), #000 calc(100% - var(--b)));
+    mask: repeating-conic-gradient(#0000 0deg, #000 1deg 70deg, #0000 71deg 90deg), radial-gradient(farthest-side, #0000 calc(100% - var(--b) - 1px), #000 calc(100% - var(--b)));
     -webkit-mask-composite: destination-in;
     mask-composite: intersect;
     animation: sp 1s infinite;
@@ -76,8 +76,22 @@ a,
     }
 }
 
-
-.mud-main-content
-{
-    background-color: var(--mud-palette-background-grey);
+.main-menu-item .mud-list-item-icon {
+    min-width: 35px !important;
 }
+
+.mud-nav-menu {
+    font-size: 1rem !important;
+}
+
+.mud-nav-link:hover {
+    color: var(--mud-palette-primary);
+}
+
+    .mud-list-item-clickable:hover,
+    .mud-list-item-clickable:hover .mud-icon-root.mud-svg-icon,
+    .mud-icon-button:hover,
+    .mud-nav-link:hover > .mud-icon-root.mud-svg-icon,
+    .mud-nav-link.active > .mud-icon-root.mud-svg-icon {
+        color: var(--mud-palette-primary) !important;
+    }

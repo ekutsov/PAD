@@ -11,6 +11,7 @@
     "PAD.Client": {
       "commandName": "Project",
       "launchBrowser": true,
+      "applicationUrl": "https://localhost:3000",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       }

@@ -1,5 +1,10 @@
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components;
+using PAD.Client.Services;
+using MudBlazor;
+using PAD.Client.Components.Dialogs;
+using PAD.Client.Extensions;
+using System.Reflection;
 
 namespace PAD.Client.Finance
 {
@@ -12,112 +17,52 @@ namespace PAD.Client.Finance
         protected NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        protected HttpClient Http { get; set; }
+        protected IHttpService HttpService { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        [Inject]
+        protected IConsoleService Console { get; set; }
+
+        [Inject]
+        protected IDialogService DialogService { get; set; }
+
+        private MudTable<ExpenseViewModel> table;
+
+        private string searchString = String.Empty;
+
+        private DateRange _dateRange = new DateRange(DateTime.Now.FirstDayOfMonth(), DateTime.Now.LastDayOfMonth());
+
+        private async Task<TableData<ExpenseViewModel>> ServerReload(TableState state)
         {
-            await Http.GetAsync("finance/weather");
+            TableStateDTO tableDTO = new(searchString, _dateRange, state);
+            try
+            {
+                Console.Log(tableDTO.ToDictionary());
+                return await HttpService.GetCollectionAsync<ExpenseViewModel>("finance/expenses", tableDTO.ToDictionary());
+            }
+            catch (Exception ex)
+            {
+                Console.Log(ex.Message);
+                return null;
+            }
         }
 
-        public int count { get { return AllOrderDetails.Count(); } }
-
-        public IEnumerable<ExpenseViewModel> AllOrderDetails = new ExpenseViewModel[]
+        private void OnSearch(string text)
         {
-            new() {
-                Id = Guid.NewGuid().ToString(),
-                CreatedDate = DateTime.UtcNow,
-                Description = "Test expense",
-                Amount = 1000,
-                CategoryId = Guid.NewGuid().ToString(),
-                CategoryName = "Products"
-            },
-            new() {
-                Id = Guid.NewGuid().ToString(),
-                CreatedDate = DateTime.UtcNow,
-                Description = "Test expense",
-                Amount = 1000,
-                CategoryId = Guid.NewGuid().ToString(),
-                CategoryName = "Products"
-            },
-            new() {
-                Id = Guid.NewGuid().ToString(),
-                CreatedDate = DateTime.UtcNow,
-                Description = "Test expense",
-                Amount = 1000,
-                CategoryId = Guid.NewGuid().ToString(),
-                CategoryName = "Products"
-            },
-            new() {
-                Id = Guid.NewGuid().ToString(),
-                CreatedDate = DateTime.UtcNow,
-                Description = "Test expense",
-                Amount = 1000,
-                CategoryId = Guid.NewGuid().ToString(),
-                CategoryName = "Products"
-            },
-            new() {
-                Id = Guid.NewGuid().ToString(),
-                CreatedDate = DateTime.UtcNow,
-                Description = "Test expense",
-                Amount = 1000,
-                CategoryId = Guid.NewGuid().ToString(),
-                CategoryName = "Products"
-            },
-            new() {
-                Id = Guid.NewGuid().ToString(),
-                CreatedDate = DateTime.UtcNow,
-                Description = "Test expense",
-                Amount = 1000,
-                CategoryId = Guid.NewGuid().ToString(),
-                CategoryName = "Products"
-            },
-            new() {
-                Id = Guid.NewGuid().ToString(),
-                CreatedDate = DateTime.UtcNow,
-                Description = "Test expense",
-                Amount = 1000,
-                CategoryId = Guid.NewGuid().ToString(),
-                CategoryName = "Products"
-            },
-            new() {
-                Id = Guid.NewGuid().ToString(),
-                CreatedDate = DateTime.UtcNow,
-                Description = "Test expense",
-                Amount = 1000,
-                CategoryId = Guid.NewGuid().ToString(),
-                CategoryName = "Products"
-            },
-            new() {
-                Id = Guid.NewGuid().ToString(),
-                CreatedDate = DateTime.UtcNow,
-                Description = "Test expense",
-                Amount = 1000,
-                CategoryId = Guid.NewGuid().ToString(),
-                CategoryName = "Products"
-            },
-            new() {
-                Id = Guid.NewGuid().ToString(),
-                CreatedDate = DateTime.UtcNow,
-                Description = "Test expense",
-                Amount = 1000,
-                CategoryId = Guid.NewGuid().ToString(),
-                CategoryName = "Products"
-            }
-        };
+            searchString = text;
+            table.ReloadServerData();
+        }
 
-        public IEnumerable<ExpenseViewModel> OrderDetails;
-
-        public IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 25 };
-
-        protected override void OnInitialized()
+        private void OpenDialog()
         {
-            OrderDetails = AllOrderDetails.Take(5).ToList();
+            DialogOptions closeOnEscapeKey = new DialogOptions() { CloseOnEscapeKey = true };
+
+            DialogService.Show<AddExpenseDialog>("Simple Dialog", closeOnEscapeKey);
         }
     }
 
     public class ExpenseViewModel
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public DateTime CreatedDate { get; set; }
 
@@ -125,8 +70,59 @@ namespace PAD.Client.Finance
 
         public double Amount { get; set; }
 
-        public string CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
 
         public string CategoryName { get; set; }
+    }
+
+    public class TableStateDTO
+    {
+        public TableStateDTO(string searchString, DateRange dateRange, TableState state)
+        {
+            SearchString = searchString;
+            StartDate = dateRange.Start.Value;
+            EndDate = dateRange.End.Value;
+            Page = state.Page.ToString();
+            PageSize = state.PageSize.ToString();
+            SortLabel = state.SortLabel;
+            SortDirection = ((int)state.SortDirection).ToString();
+        }
+        public string SearchString { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
+
+        public string Page { get; set; }
+
+        public string PageSize { get; set; }
+
+        public string SortLabel { get; set; }
+
+        public string SortDirection { get; set; }
+
+        public Dictionary<string, string> ToDictionary()
+        {
+            Dictionary<string, string> result = new()
+            {
+                {"StartDate", this.StartDate.ToString("dd/MM/yyyy")},
+                {"EndDate", this.EndDate.ToString("dd/MM/yyyy")},
+                {"Page", this.Page},
+                {"PageSize", this.PageSize},
+                {"SortDirection", this.SortDirection}
+            };
+
+            if (!string.IsNullOrWhiteSpace(this.SearchString))
+            {
+                result.Add("SearchString", this.SearchString);
+            }
+
+            if (!string.IsNullOrWhiteSpace(this.SortLabel))
+            {
+                result.Add("SortLabel", this.SortLabel);
+            }
+
+            return result;
+        }
     }
 }
