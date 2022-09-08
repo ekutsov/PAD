@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -30,9 +29,7 @@ namespace PAD.Finance.Infrastructure.Migrations
                     AuthorId = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
                     Amount = table.Column<double>(type: "double precision", nullable: false),
-                    IsExcluded = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    IsExcluded = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -1,44 +1,54 @@
 @inherits LayoutComponentBase
 
-<RadzenDialog />
-<RadzenNotification />
-<RadzenTooltip />
-<RadzenContextMenu />
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-<RadzenLayout>
-    <RadzenHeader>
-        <div class="row justify-content-space-start align-items-center">
-            <div class="col-6 d-flex align-items-center">
-                <RadzenSidebarToggle Click="@SidebarToggleClick"></RadzenSidebarToggle>
-                <RadzenLabel Text="Personal Assistant for Development" Style="font-size: 20px"></RadzenLabel>
-            </div>
-            <div class="col-6 d-flex align-items-center justify-content-end">
-                <RadzenProfileMenu Click="ProfileMenuClick">
-                    <Template>
-                        <RadzenGravatar Email="@UserName" />
-                    </Template>
-                    <ChildContent>
-                        <RadzenProfileMenuItem Icon="account_circle" Text="Profile (in progress)"></RadzenProfileMenuItem>
-                        <RadzenProfileMenuItem Text="Logout" Icon="login"></RadzenProfileMenuItem>
-                    </ChildContent>
-                </RadzenProfileMenu>
-            </div>
-        </div>
-    </RadzenHeader>
-    <RadzenSidebar Responsive="false" Expanded="@isSidebarExpanded">
-        <RadzenPanelMenu Match="Microsoft.AspNetCore.Components.Routing.NavLinkMatch.Prefix">
-            <RadzenPanelMenuItem Text="Home" Path="/" Icon="home"></RadzenPanelMenuItem>
-            <RadzenPanelMenuItem Text="Finance" Icon="payments">
-                <RadzenPanelMenuItem Text="Dashboard" Path="/finance/dashboard" Icon="dashboard"></RadzenPanelMenuItem>
-                <RadzenPanelMenuItem Text="Operations" Path="/finance/operations" Icon="money"></RadzenPanelMenuItem>
-            </RadzenPanelMenuItem>
-            <RadzenPanelMenuItem Text="Goals" Path="/goals" Icon="flag" />
-            <RadzenPanelMenuItem Icon="import_contacts" Text="Diary" Path="/diary"></RadzenPanelMenuItem>
-        </RadzenPanelMenu>
-    </RadzenSidebar>
-    <RadzenBody Expanded="@isSidebarExpanded" Style="color: #000000">
-        <RadzenContentContainer Name="main">
+<MudLayout>
+    <MudAppBar Elevation="0">
+        <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" Class="ml-3">Personal Assistant for Development</MudText>
+        <MudSpacer />
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Outlined.Notifications" Color="Color.Inherit" />
+        <MudIconButton Icon="@Icons.Material.Outlined.Settings" Color="Color.Inherit" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="1" ClipMode="DrawerClipMode.Always">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
             @Body
-        </RadzenContentContainer>
-    </RadzenBody>
-</RadzenLayout>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+<MudThemeManagerButton OnClick="@((e) => OpenThemeManager(true))" />
+<MudThemeManager Open="_themeManagerOpen" OpenChanged="OpenThemeManager" Theme="_themeManager" ThemeChanged="UpdateTheme" />
+
+@code {
+    bool _drawerOpen = true;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+        private ThemeManagerTheme _themeManager = new ThemeManagerTheme();
+        public bool _themeManagerOpen = false;
+
+        void OpenThemeManager(bool value)
+        {
+            _themeManagerOpen = value;
+        }
+
+        void UpdateTheme(ThemeManagerTheme value)
+        {
+            _themeManager = value;
+            StateHasChanged();
+        }
+
+        protected override void OnInitialized()
+        {
+            StateHasChanged();
+        }
+}

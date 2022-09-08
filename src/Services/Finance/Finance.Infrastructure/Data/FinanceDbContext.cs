@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore.Design;
-
 namespace PAD.Finance.Infrastructure.Data;
 
 public class FinanceDbContext : DbContext
@@ -28,22 +26,22 @@ public class FinanceDbContext : DbContext
         foreach (var entity in ChangeTracker.Entries())
         {
             if (entity.State == EntityState.Added && entity.Metadata.FindProperty("CreatedDate") != null)
+            {
                 entity.Property("CreatedDate").CurrentValue = DateTime.UtcNow;
-            if (entity.State == EntityState.Modified && entity.Metadata.FindProperty("UpdatedDate") != null)
-                entity.Property("UpdatedDate").CurrentValue = DateTime.UtcNow;
+            }
         }
 
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
 }
 
-public class FinanceDbContextFactory : IDesignTimeDbContextFactory<FinanceDbContext>
-{
-    public FinanceDbContext CreateDbContext(string[] args)
-    {
-        DbContextOptionsBuilder<FinanceDbContext> optionsBuilder = new();
-        optionsBuilder.UseNpgsql("Host=localhost;Port=6432;User ID=finance_admin;Database=finance;Password=supersecretpassword;");
+// public class FinanceDbContextFactory : IDesignTimeDbContextFactory<FinanceDbContext>
+// {
+//     public FinanceDbContext CreateDbContext(string[] args)
+//     {
+//         DbContextOptionsBuilder<FinanceDbContext> optionsBuilder = new();
+//         optionsBuilder.UseNpgsql("Host=localhost;Port=6432;User ID=finance_admin;Database=finance;Password=supersecretpassword;");
 
-        return new FinanceDbContext(optionsBuilder.Options);
-    }
-}
+//         return new FinanceDbContext(optionsBuilder.Options);
+//     }
+// }

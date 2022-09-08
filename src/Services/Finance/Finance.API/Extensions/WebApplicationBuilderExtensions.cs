@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace PAD.Finance.API.Extensions;
 
 public static class WebApplicationBuilderExtensions
@@ -17,6 +19,11 @@ public static class WebApplicationBuilderExtensions
     public static void AddServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IExpenseService, ExpenseService>();
+    }
+
+    public static void AddAutomapper(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddAutomapperWithProfiles();
     }
 
     public static void AddOpenIdAuthentication(this WebApplicationBuilder builder)

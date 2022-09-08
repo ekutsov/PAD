@@ -1,7 +1,5 @@
-using System.Linq.Dynamic.Core;
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components;
-using Radzen;
 
 namespace PAD.Client.Finance
 {
@@ -14,87 +12,100 @@ namespace PAD.Client.Finance
         protected NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        protected DialogService DialogService { get; set; }
+        protected HttpClient Http { get; set; }
 
-        [Inject]
-        protected TooltipService TooltipService { get; set; }
+        protected override async Task OnInitializedAsync()
+        {
+            await Http.GetAsync("finance/weather");
+        }
 
-        [Inject]
-        protected ContextMenuService ContextMenuService { get; set; }
+        public int count { get { return AllOrderDetails.Count(); } }
 
-        [Inject]
-        protected NotificationService NotificationService { get; set; }
-
-        public int count { get { return AllOrderDetails.Count(); }}
-
-        public IEnumerable<OrderDetail> AllOrderDetails = new OrderDetail[]
+        public IEnumerable<ExpenseViewModel> AllOrderDetails = new ExpenseViewModel[]
         {
             new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 1500,
-                Quantity = 6,
-                Discount = 0.20
+                Id = Guid.NewGuid().ToString(),
+                CreatedDate = DateTime.UtcNow,
+                Description = "Test expense",
+                Amount = 1000,
+                CategoryId = Guid.NewGuid().ToString(),
+                CategoryName = "Products"
             },
             new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 2500,
-                Quantity = 8,
-                Discount = 0.40
+                Id = Guid.NewGuid().ToString(),
+                CreatedDate = DateTime.UtcNow,
+                Description = "Test expense",
+                Amount = 1000,
+                CategoryId = Guid.NewGuid().ToString(),
+                CategoryName = "Products"
             },
             new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 3000,
-                Quantity = 3,
-                Discount = 0.15
+                Id = Guid.NewGuid().ToString(),
+                CreatedDate = DateTime.UtcNow,
+                Description = "Test expense",
+                Amount = 1000,
+                CategoryId = Guid.NewGuid().ToString(),
+                CategoryName = "Products"
             },
             new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 400,
-                Quantity = 20,
-                Discount = 0.60
+                Id = Guid.NewGuid().ToString(),
+                CreatedDate = DateTime.UtcNow,
+                Description = "Test expense",
+                Amount = 1000,
+                CategoryId = Guid.NewGuid().ToString(),
+                CategoryName = "Products"
             },
             new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 800,
-                Quantity = 10,
-                Discount = 0.30
+                Id = Guid.NewGuid().ToString(),
+                CreatedDate = DateTime.UtcNow,
+                Description = "Test expense",
+                Amount = 1000,
+                CategoryId = Guid.NewGuid().ToString(),
+                CategoryName = "Products"
             },
             new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 1500,
-                Quantity = 6,
-                Discount = 0.20
+                Id = Guid.NewGuid().ToString(),
+                CreatedDate = DateTime.UtcNow,
+                Description = "Test expense",
+                Amount = 1000,
+                CategoryId = Guid.NewGuid().ToString(),
+                CategoryName = "Products"
             },
             new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 2500,
-                Quantity = 8,
-                Discount = 0.40
+                Id = Guid.NewGuid().ToString(),
+                CreatedDate = DateTime.UtcNow,
+                Description = "Test expense",
+                Amount = 1000,
+                CategoryId = Guid.NewGuid().ToString(),
+                CategoryName = "Products"
             },
             new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 3000,
-                Quantity = 3,
-                Discount = 0.15
+                Id = Guid.NewGuid().ToString(),
+                CreatedDate = DateTime.UtcNow,
+                Description = "Test expense",
+                Amount = 1000,
+                CategoryId = Guid.NewGuid().ToString(),
+                CategoryName = "Products"
             },
             new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 400,
-                Quantity = 20,
-                Discount = 0.60
+                Id = Guid.NewGuid().ToString(),
+                CreatedDate = DateTime.UtcNow,
+                Description = "Test expense",
+                Amount = 1000,
+                CategoryId = Guid.NewGuid().ToString(),
+                CategoryName = "Products"
+            },
+            new() {
+                Id = Guid.NewGuid().ToString(),
+                CreatedDate = DateTime.UtcNow,
+                Description = "Test expense",
+                Amount = 1000,
+                CategoryId = Guid.NewGuid().ToString(),
+                CategoryName = "Products"
             }
         };
 
-        public IEnumerable<OrderDetail> OrderDetails;
+        public IEnumerable<ExpenseViewModel> OrderDetails;
 
         public IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 25 };
 
@@ -102,35 +113,20 @@ namespace PAD.Client.Finance
         {
             OrderDetails = AllOrderDetails.Take(5).ToList();
         }
-
-        public void LoadData(LoadDataArgs args)
-        {
-            var query = AllOrderDetails.AsQueryable();
-
-            if (!string.IsNullOrEmpty(args.Filter))
-            {
-                query = query.Where(args.Filter);
-            }
-
-            if (!string.IsNullOrEmpty(args.OrderBy))
-            {
-                query = query.OrderBy(args.OrderBy);
-            }
-
-            OrderDetails = query.Skip(args.Skip.Value).Take(args.Top.Value).ToList();
-        }
     }
 
-    public class OrderDetail
+    public class ExpenseViewModel
     {
-        public string OrderID { get; set; }
+        public string Id { get; set; }
 
-        public string ProductID { get; set; }
+        public DateTime CreatedDate { get; set; }
 
-        public double UnitPrice { get; set; }
+        public string Description { get; set; }
 
-        public int Quantity { get; set; }
+        public double Amount { get; set; }
 
-        public double Discount { get; set; }
+        public string CategoryId { get; set; }
+
+        public string CategoryName { get; set; }
     }
 }

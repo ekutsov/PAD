@@ -10,6 +10,8 @@ builder.AddOpenIdAuthentication();
 
 builder.AddServices();
 
+builder.AddAutomapper();
+
 builder.AddControllersAndEndpoints();
 
 builder.AddSwagger();

@@ -1,21 +1,8 @@
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
-using PAD.Finance.Domain.ViewModels;
-using PAD.Finance.Infrastructure.Data;
-
 namespace PAD.Finance.Core.Services;
 
-public class ExpenseService : IExpenseService
+public class ExpenseService : BaseService, IExpenseService
 {
-    private readonly FinanceDbContext _context;
-
-    private readonly IConfigurationProvider _mapperProvider;
-    public ExpenseService(FinanceDbContext context, IMapper mapper)
-    {
-        _context = context;
-        _mapperProvider = mapper.ConfigurationProvider;
-    }
+    public ExpenseService(FinanceDbContext context, IMapper mapper) : base(context, mapper) { }
 
     public async Task<List<ExpenseViewModel>> GetAllAsync()
     {
@@ -24,5 +11,18 @@ public class ExpenseService : IExpenseService
             .ToListAsync();
 
         return expenses;
+    }
+
+    public async Task<ExpenseViewModel> CreateAsync(ExpenseDTO expenseDTO)
+    {
+        Expense expense = _mapper.Map<Expense>(expenseDTO);
+
+        _context.Expsenses.Add(expense);
+
+        await _context.SaveChangesAsync();
+
+        ExpenseViewModel expenseView = _mapper.Map<ExpenseViewModel>(expense);
+
+        return expenseView;
     }
 }

@@ -1,3 +1,5 @@
+using MudBlazor.Services;
+
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.RootComponents.Add<App>("#app");
@@ -23,12 +25,6 @@ builder.Services.AddOidcAuthentication(options =>
     options.UserOptions.RoleClaim = "role";
 });
 
-builder.Services.AddScoped<DialogService>();
-
-builder.Services.AddScoped<NotificationService>();
-
-builder.Services.AddScoped<TooltipService>();
-
-builder.Services.AddScoped<ContextMenuService>();
+builder.Services.AddMudServices();
 
 await builder.Build().RunAsync();

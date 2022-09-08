@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components;
-using Radzen.Blazor;
 
 namespace PAD.Client.Shared;
 
@@ -31,9 +30,9 @@ public partial class MainLayout
         isSidebarExpanded = !isSidebarExpanded;
     }
 
-    protected async Task ProfileMenuClick(RadzenProfileMenuItem args)
+    protected async Task ProfileMenuClick()
     {
-        switch (args.Text)
+        switch ("args.Text")
         {
             case "Logout":
                 await SignOutManager.SetSignOutState();

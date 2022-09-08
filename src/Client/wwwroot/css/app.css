@@ -1,12 +1,13 @@
+:root { font-family: 'Inter', sans-serif; }
+
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
-html,
-body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+html {
+    height: 100vh;
 }
 
-body {
-    background: white !important;
+body, .app, .mud-main-content {
+    height: inherit;
 }
 
 a,
@@ -73,4 +74,10 @@ a,
     to {
         transform: rotate(.5turn)
     }
+}
+
+
+.mud-main-content
+{
+    background-color: var(--mud-palette-background-grey);
 }
