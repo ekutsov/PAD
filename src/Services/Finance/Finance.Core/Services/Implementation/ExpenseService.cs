@@ -6,14 +6,15 @@ public class ExpenseService : BaseService, IExpenseService
 
     public async Task<TableViewModel<ExpenseViewModel>> GetAllAsync(TableStateDTO tableState)
     {
-        IQueryable<Expense> query =  _context.Expsenses.Where(x => true);
+        IQueryable<Expense> query = _context.Expsenses
+            .Where(e => tableState.StartDate.ToUniversalTime() <= e.CreatedDate && tableState.EndDate.ToUniversalTime() >= e.CreatedDate);
 
         List<ExpenseViewModel> expenses = await query
             .ProjectTo<ExpenseViewModel>(_mapperProvider)
             .Skip(tableState.Page)
             .Take(tableState.PageSize)
             .ToListAsync();
-        
+
         int totalItems = await query.CountAsync();
 
         return new(expenses, totalItems);

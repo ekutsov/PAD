@@ -36,8 +36,12 @@ namespace PAD.Client.Finance
             TableStateDTO tableDTO = new(searchString, _dateRange, state);
             try
             {
-                Console.Log(tableDTO.ToDictionary());
-                return await HttpService.GetCollectionAsync<ExpenseViewModel>("finance/expenses", tableDTO.ToDictionary());
+                Dictionary<string, string> queryParams = tableDTO.GetType()
+                    .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                    .ToDictionary(prop => prop.Name, prop => (string)prop.GetValue(tableDTO, null));
+
+                Console.Log(queryParams);
+                return await HttpService.GetCollectionAsync<ExpenseViewModel>("finance/expenses", queryParams);
             }
             catch (Exception ex)
             {
@@ -80,18 +84,18 @@ namespace PAD.Client.Finance
         public TableStateDTO(string searchString, DateRange dateRange, TableState state)
         {
             SearchString = searchString;
-            StartDate = dateRange.Start.Value;
-            EndDate = dateRange.End.Value;
+            StartDate = dateRange.Start.Value.ToString("MM/dd/yyyy");
+            EndDate = dateRange.End.Value.ToString("MM/dd/yyyy");
             Page = state.Page.ToString();
             PageSize = state.PageSize.ToString();
-            SortLabel = state.SortLabel;
+            SortLabel = state.SortLabel ?? string.Empty;
             SortDirection = ((int)state.SortDirection).ToString();
         }
         public string SearchString { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public string StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public string EndDate { get; set; }
 
         public string Page { get; set; }
 
@@ -100,29 +104,5 @@ namespace PAD.Client.Finance
         public string SortLabel { get; set; }
 
         public string SortDirection { get; set; }
-
-        public Dictionary<string, string> ToDictionary()
-        {
-            Dictionary<string, string> result = new()
-            {
-                {"StartDate", this.StartDate.ToString("dd/MM/yyyy")},
-                {"EndDate", this.EndDate.ToString("dd/MM/yyyy")},
-                {"Page", this.Page},
-                {"PageSize", this.PageSize},
-                {"SortDirection", this.SortDirection}
-            };
-
-            if (!string.IsNullOrWhiteSpace(this.SearchString))
-            {
-                result.Add("SearchString", this.SearchString);
-            }
-
-            if (!string.IsNullOrWhiteSpace(this.SortLabel))
-            {
-                result.Add("SortLabel", this.SortLabel);
-            }
-
-            return result;
-        }
     }
 }
