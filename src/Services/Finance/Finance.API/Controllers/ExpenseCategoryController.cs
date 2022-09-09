@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using PAD.Finance.Domain.ViewModels;
-
 namespace PFA.Finance.Controllers;
 
 [Route("api/v1/expenses/categories")]

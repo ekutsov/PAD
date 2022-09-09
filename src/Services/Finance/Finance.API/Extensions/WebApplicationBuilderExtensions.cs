@@ -1,5 +1,3 @@
-using System.Reflection;
-
 namespace PAD.Finance.API.Extensions;
 
 public static class WebApplicationBuilderExtensions

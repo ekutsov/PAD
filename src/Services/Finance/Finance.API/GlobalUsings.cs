@@ -7,3 +7,8 @@ global using PAD.Finance.Core.Services;
 global using PAD.Finance.Infrastructure.Data;
 global using PAD.Finance.Domain.Settings;
 global using Microsoft.Extensions.Options;
+global using System.Security.Claims;
+global using APS.Web.Filters;
+global using Microsoft.AspNetCore.Mvc;
+global using PAD.Finance.Domain.ViewModels;
+global using PAD.Finance.Domain.DTO;

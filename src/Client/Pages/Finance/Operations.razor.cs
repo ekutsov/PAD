@@ -56,6 +56,12 @@ namespace PAD.Client.Finance
             table.ReloadServerData();
         }
 
+        private void OnDateRangeChange(DateRange dateRange)
+        {
+            _dateRange = dateRange;
+            table.ReloadServerData();
+        }
+
         private void OpenDialog()
         {
             DialogOptions closeOnEscapeKey = new DialogOptions() { CloseOnEscapeKey = true };

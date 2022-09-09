@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using PAD.Finance.Domain.DTO;
-using PAD.Finance.Domain.ViewModels;
-
 namespace PFA.Finance.Controllers;
 
 [Route("api/v1/expenses")]
@@ -18,10 +14,10 @@ public class ExpenseController : BaseController<IExpenseService>
     }
 
     [HttpPost]
-    public async Task<ActionResult<ExpenseViewModel>> Create([FromBody] ExpenseDTO expenseDTO)
+    public async Task<ActionResult> Create([FromBody] ExpenseDTO expenseDTO)
     {
-        ExpenseViewModel createdExpenseView = await _service.CreateAsync(expenseDTO);
+        await _service.CreateAsync(expenseDTO);
 
-        return Json(createdExpenseView);
+        return Ok();
     }
 }

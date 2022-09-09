@@ -15,10 +15,10 @@
         <MudSpacer />
         <MudDateRangePicker Label="Period" PickerVariant="PickerVariant.Dialog" DateFormat="dd/MM/yyyy"
             IconSize="Size.Small" Margin="Margin.Dense" InputVariant="Variant.Outlined" TitleDateFormat="dddd, dd MMMM"
-            @bind-DateRange="_dateRange" />
-        <MudButton @onclick="OpenDialog" Variant="Variant.Outlined" Color="Color.Primary">
+            DateRangeChanged="OnDateRangeChange" DateRange="_dateRange" />
+        @* <MudButton @onclick="OpenDialog" Variant="Variant.Outlined" Color="Color.Primary">
             Add expense
-        </MudButton>
+            </MudButton> *@
     </ToolBarContent>
     <HeaderContent>
         <MudTh>
@@ -35,10 +35,10 @@
         </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Nr">@context.CategoryName</MudTd>
-        <MudTd DataLabel="Sign">@context.Description</MudTd>
-        <MudTd DataLabel="Name">@context.Amount</MudTd>
-        <MudTd DataLabel="Position">@context.CreatedDate</MudTd>
+        <MudTd DataLabel="Category">@context.CategoryName</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+        <MudTd DataLabel="Amount">@context.Amount</MudTd>
+        <MudTd DataLabel="CreatedDate">@context.CreatedDate</MudTd>
     </RowTemplate>
     <NoRecordsContent>
         <MudText>No matching records found</MudText>

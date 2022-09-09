@@ -13,7 +13,7 @@
             TransformOrigin="Origin.TopRight">
             <MudMenuItem Class="main-menu-item"
                 Icon="@(_isDarkMode ? Icons.Outlined.LightMode : Icons.Outlined.DarkMode)" OnClick="@ThemeModeToogle"
-                IconColor="@(_isDarkMode ? Color.Warning : Color.Default)">
+                IconColor="Color.Default">
                 @(_isDarkMode ? "Light mode" : "Dark mode")
             </MudMenuItem>
             <MudMenuItem Class="main-menu-item" Icon="@Icons.Outlined.Logout" OnClick="@(async() => await Logout())">

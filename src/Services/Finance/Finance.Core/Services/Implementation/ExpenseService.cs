@@ -6,8 +6,13 @@ public class ExpenseService : BaseService, IExpenseService
 
     public async Task<TableViewModel<ExpenseViewModel>> GetAllAsync(TableStateDTO tableState)
     {
+        string searchString = "%" + tableState.SearchString + "%";
         IQueryable<Expense> query = _context.Expsenses
-            .Where(e => tableState.StartDate.ToUniversalTime() <= e.CreatedDate && tableState.EndDate.ToUniversalTime() >= e.CreatedDate);
+            .Where(e => tableState.StartDate.ToUniversalTime() <= e.CreatedDate && tableState.EndDate.ToUniversalTime() >= e.CreatedDate)
+            .Where(e => string.IsNullOrWhiteSpace(searchString) ||
+                        EF.Functions.ILike(e.Category.Name, searchString) ||
+                        EF.Functions.ILike(e.Description, searchString) ||
+                        EF.Functions.ILike(e.Amount.ToString(), searchString));
 
         List<ExpenseViewModel> expenses = await query
             .ProjectTo<ExpenseViewModel>(_mapperProvider)
@@ -20,18 +25,12 @@ public class ExpenseService : BaseService, IExpenseService
         return new(expenses, totalItems);
     }
 
-    public async Task<ExpenseViewModel> CreateAsync(ExpenseDTO expenseDTO)
+    public async Task CreateAsync(ExpenseDTO expenseDTO)
     {
         Expense expense = _mapper.Map<Expense>(expenseDTO);
-
-        expense.CreatedDate = DateTime.UtcNow;
 
         _context.Expsenses.Add(expense);
 
         await _context.SaveChangesAsync();
-
-        ExpenseViewModel expenseView = _mapper.Map<ExpenseViewModel>(expense);
-
-        return expenseView;
     }
 }

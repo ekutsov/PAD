@@ -1,7 +1,3 @@
-using System.Security.Claims;
-using APS.Web.Filters;
-using Microsoft.AspNetCore.Mvc;
-
 namespace PFA.Finance.Controllers;
 
 [ValidateModel]
@@ -13,5 +9,5 @@ public abstract class BaseController<TService> : Controller
         _service = service;
     }
 
-    public string UserId => User.FindFirst(ClaimTypes.NameIdentifier).Value;
+    public string UserId => User.FindFirstValue("sub");
 }
