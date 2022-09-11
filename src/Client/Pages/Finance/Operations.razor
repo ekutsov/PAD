@@ -1,37 +1,33 @@
 @namespace PAD.Client.Finance
 
-@page "/finance/operations"
-
 <PageTitle>Operations</PageTitle>
 
 <MudText Typo="Typo.h5" Style="margin: 24px 0;">Operations</MudText>
 
-<MudTable ServerData="@(new Func<TableState, Task<TableData<ExpenseViewModel>>>(ServerReload))" Hover="true"
-    @ref="table">
+<MudTable ServerData="@(new Func<TableState, Task<TableData<Models.Expense>>>(ServerReload))" Hover="true"
+    @ref="_table" MultiSelection="true" SelectedItems="selectedExpenses" >
     <ToolBarContent>
-        <MudTextField T="string" Label="Search" ValueChanged="@(s=>OnSearch(s))" Adornment="Adornment.Start"
-            Variant="Variant.Outlined" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small"
-            Margin="Margin.Dense" Class="mt-0"></MudTextField>
+        <MudTextField T="string" Label="Search" DebounceInterval="500" OnDebounceIntervalElapsed="OnSearchStringChanged"
+            Adornment="Adornment.Start" Variant="Variant.Outlined" AdornmentIcon="@Icons.Material.Filled.Search"
+            IconSize="Size.Small" @bind-Value="@_searchString" Margin="Margin.Dense" Class="mt-0"></MudTextField>
         <MudSpacer />
         <MudDateRangePicker Label="Period" PickerVariant="PickerVariant.Dialog" DateFormat="dd/MM/yyyy"
             IconSize="Size.Small" Margin="Margin.Dense" InputVariant="Variant.Outlined" TitleDateFormat="dddd, dd MMMM"
             DateRangeChanged="OnDateRangeChange" DateRange="_dateRange" />
-        @* <MudButton @onclick="OpenDialog" Variant="Variant.Outlined" Color="Color.Primary">
-            Add expense
-            </MudButton> *@
+        <MudIconButton @onclick="CreateExpense" Icon="@Icons.Material.Outlined.AddCircleOutline" Color="Color.Primary" />
     </ToolBarContent>
     <HeaderContent>
         <MudTh>
-            <MudTableSortLabel SortLabel="CategoryName" T="ExpenseViewModel">Category</MudTableSortLabel>
+            <MudTableSortLabel SortLabel="CategoryName" T="Models.Expense">Category</MudTableSortLabel>
         </MudTh>
         <MudTh>
-            <MudTableSortLabel SortLabel="Description" T="ExpenseViewModel">Description</MudTableSortLabel>
+            <MudTableSortLabel SortLabel="Description" T="Models.Expense">Description</MudTableSortLabel>
         </MudTh>
         <MudTh>
-            <MudTableSortLabel SortLabel="Amount" T="ExpenseViewModel">Amount</MudTableSortLabel>
+            <MudTableSortLabel SortLabel="Amount" T="Models.Expense">Amount</MudTableSortLabel>
         </MudTh>
         <MudTh>
-            <MudTableSortLabel SortLabel="CreatedDate" T="ExpenseViewModel">Date</MudTableSortLabel>
+            <MudTableSortLabel SortLabel="CreatedDate" T="Models.Expense">Date</MudTableSortLabel>
         </MudTh>
     </HeaderContent>
     <RowTemplate>

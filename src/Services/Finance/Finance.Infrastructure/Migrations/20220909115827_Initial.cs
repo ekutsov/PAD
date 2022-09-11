@@ -49,8 +49,8 @@ namespace PAD.Finance.Infrastructure.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("1e61b920-12aa-4093-b009-9ec9194b9bfa"), "Utility bills" },
-                    { new Guid("7b48e3bc-a2e5-4e97-a14f-5baccc826b6f"), "Foodstuff" }
+                    { new Guid("44f93169-8a8f-486f-b941-891d6ab7fb8a"), "Foodstuff" },
+                    { new Guid("6992575c-29f4-4c78-aaf7-b50e2e80f3e9"), "Utility bills" }
                 });
 
             migrationBuilder.CreateIndex(

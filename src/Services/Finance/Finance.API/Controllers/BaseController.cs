@@ -9,5 +9,5 @@ public abstract class BaseController<TService> : Controller
         _service = service;
     }
 
-    public string UserId => User.FindFirstValue("sub");
+    public string UserId { get { return User.FindFirstValue("sub"); } }
 }

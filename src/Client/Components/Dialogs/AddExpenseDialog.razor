@@ -1,21 +1,31 @@
-<MudDialog>
-    <DialogContent>
-        <MudTextField T="string" Label="Name"></MudTextField>
-        <MudSelect T="string" Label="Favorite Coffee" AnchorOrigin="Origin.BottomCenter">
-            <MudSelectItem Value="@("Cappuccino")" />
-            <MudSelectItem Value="@("Cafe Latte")" />
-            <MudSelectItem Value="@("Espresso")" />
-            <MudSelectItem Value="@("Irish Coffee")" />
-        </MudSelect>
-    </DialogContent>
-    <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
-    </DialogActions>
-</MudDialog>
-@code {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+@namespace PAD.Client.Components.Dialogs
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
-    void Cancel() => MudDialog.Cancel();
-}
+<MudGrid Style="padding: 0 24px 24px 24px;">
+    <MudItem xs="12" sm="8">
+        <MudDatePicker PickerVariant="PickerVariant.Static" Orientation="Orientation.Landscape"
+            @bind-Date="CreatedDate" />
+    </MudItem>
+    <MudItem xs="12" sm="4" Class="mud-height-full" Style="height: inherit;">
+        <EditForm Model="@Expense" OnValidSubmit="OnValidSubmit"
+            style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+            <DataAnnotationsValidator />
+            <MudSelect @bind-Value="Expense.CategoryId" For="@(() => Expense.CategoryId)" T="string" Label="Category"
+                Margin="Margin.Dense" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+                @foreach (var category in Categories)
+                {
+                    <MudSelectItem T="string" Value="category.Id">@category.Name</MudSelectItem>
+                }
+            </MudSelect>
+            <MudNumericField @bind-Value="Expense.Amount" For="@(() => Expense.Amount)" Label="Amount" Min="0.1"
+                Variant="Variant.Outlined" Margin="Margin.Dense" />
+            <MudTextField @bind-Value="Expense.Description" Label="Decription" Lines="5"
+                For="@(() => Expense.Description)" Variant="Variant.Outlined" Margin="Margin.Dense" />
+            <div class="d-flex justify-content-end">
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
+                    Class="ml-auto">
+                    Create
+                </MudButton>
+            </div>
+        </EditForm>
+    </MudItem>
+</MudGrid>

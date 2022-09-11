@@ -12,7 +12,7 @@ using PAD.Finance.Infrastructure.Data;
 namespace PAD.Finance.Infrastructure.Migrations
 {
     [DbContext(typeof(FinanceDbContext))]
-    [Migration("20220908122803_Initial")]
+    [Migration("20220909115827_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,12 +71,12 @@ namespace PAD.Finance.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7b48e3bc-a2e5-4e97-a14f-5baccc826b6f"),
+                            Id = new Guid("44f93169-8a8f-486f-b941-891d6ab7fb8a"),
                             Name = "Foodstuff"
                         },
                         new
                         {
-                            Id = new Guid("1e61b920-12aa-4093-b009-9ec9194b9bfa"),
+                            Id = new Guid("6992575c-29f4-4c78-aaf7-b50e2e80f3e9"),
                             Name = "Utility bills"
                         });
                 });

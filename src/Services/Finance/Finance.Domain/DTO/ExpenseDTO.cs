@@ -6,7 +6,7 @@ public class ExpenseDTO
 
     public string Description { get; set; }
 
-    protected DateTime CreatedDate { get; set; }
+    public DateTime CreatedDate { get; set; }
 
     public double Amount { get; set; }
 }

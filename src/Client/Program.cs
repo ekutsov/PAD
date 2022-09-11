@@ -1,5 +1,4 @@
 using MudBlazor.Services;
-using PAD.Client.Services;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -26,8 +25,9 @@ builder.Services.AddOidcAuthentication(options =>
     options.UserOptions.RoleClaim = "role";
 });
 
-builder.Services.AddScoped<IHttpService, HttpService>();
 builder.Services.AddSingleton<IConsoleService, ConsoleService>();
+
+builder.Services.AddScoped<IFinanceService, FinanceService>();
 
 builder.Services.AddMudServices();
 

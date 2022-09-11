@@ -1,114 +1,48 @@
-using Microsoft.JSInterop;
-using Microsoft.AspNetCore.Components;
-using PAD.Client.Services;
-using MudBlazor;
-using PAD.Client.Components.Dialogs;
-using PAD.Client.Extensions;
-using System.Reflection;
+namespace PAD.Client.Finance;
 
-namespace PAD.Client.Finance
+[Authorize]
+[Route("finance/operations")]
+public partial class Operations
 {
-    public partial class Operations
+    [Inject] private IFinanceService FinanceService { get; set; }
+
+    [Inject] private IDialogService DialogService { get; set; }
+
+    private HashSet<Expense> selectedExpenses = new HashSet<Expense>();
+
+    private MudTable<Expense> _table;
+
+    private string _searchString = String.Empty;
+
+    private DateRange _dateRange = new DateRange(DateTime.Now.FirstDayOfMonth(), DateTime.Now.LastDayOfMonth());
+
+    private async Task<TableData<Expense>> ServerReload(TableState state) =>
+        await FinanceService.GetPagedExpensesAsync(new TableStateDTO(_searchString, _dateRange, state));
+
+    private void OnSearchStringChanged() => _table.ReloadServerData();
+
+    private void OnDateRangeChange(DateRange dateRange)
     {
-        [Inject]
-        protected IJSRuntime JSRuntime { get; set; }
-
-        [Inject]
-        protected NavigationManager NavigationManager { get; set; }
-
-        [Inject]
-        protected IHttpService HttpService { get; set; }
-
-        [Inject]
-        protected IConsoleService Console { get; set; }
-
-        [Inject]
-        protected IDialogService DialogService { get; set; }
-
-        private MudTable<ExpenseViewModel> table;
-
-        private string searchString = String.Empty;
-
-        private DateRange _dateRange = new DateRange(DateTime.Now.FirstDayOfMonth(), DateTime.Now.LastDayOfMonth());
-
-        private async Task<TableData<ExpenseViewModel>> ServerReload(TableState state)
-        {
-            TableStateDTO tableDTO = new(searchString, _dateRange, state);
-            try
-            {
-                Dictionary<string, string> queryParams = tableDTO.GetType()
-                    .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                    .ToDictionary(prop => prop.Name, prop => (string)prop.GetValue(tableDTO, null));
-
-                Console.Log(queryParams);
-                return await HttpService.GetCollectionAsync<ExpenseViewModel>("finance/expenses", queryParams);
-            }
-            catch (Exception ex)
-            {
-                Console.Log(ex.Message);
-                return null;
-            }
-        }
-
-        private void OnSearch(string text)
-        {
-            searchString = text;
-            table.ReloadServerData();
-        }
-
-        private void OnDateRangeChange(DateRange dateRange)
-        {
-            _dateRange = dateRange;
-            table.ReloadServerData();
-        }
-
-        private void OpenDialog()
-        {
-            DialogOptions closeOnEscapeKey = new DialogOptions() { CloseOnEscapeKey = true };
-
-            DialogService.Show<AddExpenseDialog>("Simple Dialog", closeOnEscapeKey);
-        }
+        _dateRange = dateRange;
+        _table.ReloadServerData();
     }
 
-    public class ExpenseViewModel
+    private async Task CreateExpense()
     {
-        public Guid Id { get; set; }
-
-        public DateTime CreatedDate { get; set; }
-
-        public string Description { get; set; }
-
-        public double Amount { get; set; }
-
-        public Guid CategoryId { get; set; }
-
-        public string CategoryName { get; set; }
-    }
-
-    public class TableStateDTO
-    {
-        public TableStateDTO(string searchString, DateRange dateRange, TableState state)
+        DialogOptions dialogOptions = new()
         {
-            SearchString = searchString;
-            StartDate = dateRange.Start.Value.ToString("MM/dd/yyyy");
-            EndDate = dateRange.End.Value.ToString("MM/dd/yyyy");
-            Page = state.Page.ToString();
-            PageSize = state.PageSize.ToString();
-            SortLabel = state.SortLabel ?? string.Empty;
-            SortDirection = ((int)state.SortDirection).ToString();
+            CloseButton = true,
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Medium
+        };
+
+        IDialogReference addExpenseDialog = DialogService.Show<AddExpenseDialog>("Create expense", dialogOptions);
+
+        DialogResult result = await addExpenseDialog.Result;
+
+        if (!result.Cancelled)
+        {
+            await _table.ReloadServerData();
         }
-        public string SearchString { get; set; }
-
-        public string StartDate { get; set; }
-
-        public string EndDate { get; set; }
-
-        public string Page { get; set; }
-
-        public string PageSize { get; set; }
-
-        public string SortLabel { get; set; }
-
-        public string SortDirection { get; set; }
     }
 }

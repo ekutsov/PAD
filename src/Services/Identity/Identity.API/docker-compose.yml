@@ -10,13 +10,3 @@ services:
       POSTGRES_DB: "identity"
       POSTGRES_USER: "identity_admin"
       POSTGRES_PASSWORD: "supersecretpassword"
-  
-  db_finance:
-    image: postgres:latest
-    ports:
-      - "6432:5432"
-    restart: always
-    environment:
-      POSTGRES_DB: "finance"
-      POSTGRES_USER: "finance_admin"
-      POSTGRES_PASSWORD: "supersecretpassword"

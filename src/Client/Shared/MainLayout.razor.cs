@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Microsoft.AspNetCore.Components;
-using MudBlazor;
 using MudBlazor.ThemeManager;
 using Microsoft.JSInterop;
 
@@ -80,10 +76,5 @@ public partial class MainLayout
     protected override void OnInitialized()
     {
         StateHasChanged();
-    }
-
-    public void WriteLog(object obj)
-    {
-        ((IJSInProcessRuntime)_jsRuntime).Invoke<object>("console.log", obj);
     }
 }
