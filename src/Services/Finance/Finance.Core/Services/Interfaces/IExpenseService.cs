@@ -2,7 +2,21 @@ namespace PAD.Finance.Core.Services;
 
 public interface IExpenseService
 {
-    Task<TableViewModel<ExpenseViewModel>> GetAllAsync(TableStateDTO tableState, string userId);
+    /// <summary>
+    /// Get paged user expenses 
+    /// </summary>
+    /// <param name="tableState">Table params</param>
+    /// <param name="userId">User identifier</param>
+    /// <returns>Paged expenses and total value</returns>
+    Task<TableViewModel<ExpenseViewModel>> GetPagedAsync(TableStateDTO tableState, Guid userId);
 
-    Task CreateAsync(ExpenseDTO expenseDTO, string userId);
+    /// <summary>
+    /// Create expense for user
+    /// </summary>
+    /// <param name="expenseDTO">Expense data</param>
+    /// <param name="userId">User identifier</param>
+    /// <returns></returns>
+    Task CreateAsync(ExpenseDTO expenseDTO, Guid userId);
+
+    Task UpdateAsync(Guid id, ExpenseDTO expenseDTO, Guid userId);
 }

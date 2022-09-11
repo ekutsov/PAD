@@ -18,6 +18,9 @@ public class FinanceService : HttpService, IFinanceService
         return expenseCategories;
     }
 
-    public async Task CreateExpense(ExpenseDTO expense) =>
+    public async Task CreateExpenseAsync(ExpenseDTO expense) =>
         await CreateAsync("finance/expenses", expense);
+
+    public async Task UpdateExpenseAsync(Guid id, ExpenseDTO expense) =>
+        await UpdateAsync($"finance/expenses/{id}", expense);
 }

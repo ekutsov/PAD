@@ -10,7 +10,5 @@ public class Expense
 
     public double Amount { get; set; }
 
-    public Guid CategoryId { get; set; }
-
-    public string CategoryName { get; set; }
+    public ExpenseCategory Category { get; set; }
 }

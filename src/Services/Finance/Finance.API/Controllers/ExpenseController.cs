@@ -9,19 +9,19 @@ public class ExpenseController : BaseController<IExpenseService>
     /// <summary>
     /// Expense controller with IExpenseService injection
     /// </summary>
-    /// <param name="service"></param>
+    /// <param name="service">IExpense service</param>
     /// <returns></returns>
     public ExpenseController(IExpenseService service) : base(service) { }
 
     /// <summary>
     /// Get user expenses
     /// </summary>
-    /// <param name="tableState">Table state data</param>
-    /// <returns></returns>
+    /// <param name="tableState">Table params</param>
+    /// <returns>Paged expenses and total value</returns>
     [HttpGet]
-    public async Task<ActionResult<TableViewModel<ExpenseViewModel>>> GetAll([FromQuery] TableStateDTO tableState)
+    public async Task<ActionResult<TableViewModel<ExpenseViewModel>>> GetPaged([FromQuery] TableStateDTO tableState)
     {
-        TableViewModel<ExpenseViewModel> expenses = await _service.GetAllAsync(tableState, UserId);
+        TableViewModel<ExpenseViewModel> expenses = await _service.GetPagedAsync(tableState, UserId);
 
         return Json(expenses);
     }
@@ -35,6 +35,14 @@ public class ExpenseController : BaseController<IExpenseService>
     public async Task<ActionResult> Create([FromBody] ExpenseDTO expenseDTO)
     {
         await _service.CreateAsync(expenseDTO, UserId);
+
+        return Ok();
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> Update([FromRoute] Guid id, [FromBody] ExpenseDTO expenseDTO)
+    {
+        await _service.UpdateAsync(id, expenseDTO, UserId);
 
         return Ok();
     }

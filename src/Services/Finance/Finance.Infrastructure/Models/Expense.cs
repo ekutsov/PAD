@@ -15,7 +15,7 @@ public class Expense : BaseEntity
     /// Identifier of the user from the identity service that created the expense
     /// </summary>
     /// <value></value>
-    public string AuthorId { get; set; }
+    public Guid AuthorId { get; set; }
 
     /// <summary>
     /// Expense description
@@ -49,6 +49,6 @@ public class Expense : BaseEntity
     /// </summary>
     /// <value></value>
     public virtual ExpenseCategory Category { get; set; }
-    
+
     #endregion Virtual fields
 }

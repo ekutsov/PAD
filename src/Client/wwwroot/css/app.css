@@ -95,3 +95,19 @@ a,
 .mud-nav-link.active>.mud-icon-root.mud-svg-icon {
     color: var(--mud-palette-primary) !important;
 }
+
+.selected {
+    background-color: var(--mud-palette-primary) !important;
+}
+
+.selected>td {
+    color: white !important;
+}
+
+.selected>td .mud-input {
+    color: white !important;
+}
+
+.mud-table-row {
+    cursor: pointer;
+}

@@ -6,7 +6,13 @@ public class ExpenseService : BaseService, IExpenseService
 {
     public ExpenseService(FinanceDbContext context, IMapper mapper) : base(context, mapper) { }
 
-    public async Task<TableViewModel<ExpenseViewModel>> GetAllAsync(TableStateDTO tableState, string userId)
+    /// <summary>
+    /// Get paged user expenses 
+    /// </summary>
+    /// <param name="tableState">Table params</param>
+    /// <param name="userId">User identifier</param>
+    /// <returns>Paged expenses and total value</returns>
+    public async Task<TableViewModel<ExpenseViewModel>> GetPagedAsync(TableStateDTO tableState, Guid userId)
     {
         string searchString = "%" + tableState.SearchString + "%";
         IQueryable<Expense> query = _context.Expsenses
@@ -29,7 +35,13 @@ public class ExpenseService : BaseService, IExpenseService
         return new(expenses, totalItems);
     }
 
-    public async Task CreateAsync(ExpenseDTO expenseDTO, string userId)
+    /// <summary>
+    /// Create expense for user
+    /// </summary>
+    /// <param name="expenseDTO">Expense data</param>
+    /// <param name="userId">User identifier</param>
+    /// <returns></returns>
+    public async Task CreateAsync(ExpenseDTO expenseDTO, Guid userId)
     {
         Expense expense = _mapper.Map<Expense>(expenseDTO);
 
@@ -38,5 +50,19 @@ public class ExpenseService : BaseService, IExpenseService
         _context.Expsenses.Add(expense);
 
         await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Guid id, ExpenseDTO expenseDTO, Guid userId)
+    {
+        Expense? expense = await _context.Expsenses.FirstOrDefaultAsync(e => e.Id == id && e.AuthorId == userId);
+
+        if (expense != null)
+        {
+            _mapper.Map(expenseDTO, expense);
+
+            _context.Expsenses.Update(expense);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

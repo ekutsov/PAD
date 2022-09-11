@@ -6,5 +6,7 @@ public interface IFinanceService
 
     Task<List<ExpenseCategory>> GetExpenseCategoriesAsync();
 
-    Task CreateExpense(ExpenseDTO expense);
+    Task CreateExpenseAsync(ExpenseDTO expense);
+
+    Task UpdateExpenseAsync(Guid id, ExpenseDTO expense);
 }

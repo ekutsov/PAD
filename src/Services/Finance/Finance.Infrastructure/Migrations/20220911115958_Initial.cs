@@ -27,7 +27,7 @@ namespace PAD.Finance.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
-                    AuthorId = table.Column<string>(type: "text", nullable: true),
+                    AuthorId = table.Column<Guid>(type: "uuid", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Amount = table.Column<double>(type: "double precision", nullable: false),
@@ -49,8 +49,8 @@ namespace PAD.Finance.Infrastructure.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("44f93169-8a8f-486f-b941-891d6ab7fb8a"), "Foodstuff" },
-                    { new Guid("6992575c-29f4-4c78-aaf7-b50e2e80f3e9"), "Utility bills" }
+                    { new Guid("21a5466e-a85e-4f5c-9ebd-8b0918b4aa0c"), "Utility bills" },
+                    { new Guid("84bcc51c-f6bd-4e66-845a-ecbc19c76570"), "Foodstuff" }
                 });
 
             migrationBuilder.CreateIndex(

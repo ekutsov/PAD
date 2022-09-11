@@ -4,17 +4,41 @@
 
 <MudText Typo="Typo.h5" Style="margin: 24px 0;">Operations</MudText>
 
-<MudTable ServerData="@(new Func<TableState, Task<TableData<Models.Expense>>>(ServerReload))" Hover="true"
-    @ref="_table" MultiSelection="true" SelectedItems="selectedExpenses" >
+<MudTable ServerData="@(new Func<TableState, Task<TableData<Models.Expense>>>(ServerReload))" Bordered="true"
+    Hover="true" @ref="_table" RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="Expense">
     <ToolBarContent>
-        <MudTextField T="string" Label="Search" DebounceInterval="500" OnDebounceIntervalElapsed="OnSearchStringChanged"
-            Adornment="Adornment.Start" Variant="Variant.Outlined" AdornmentIcon="@Icons.Material.Filled.Search"
-            IconSize="Size.Small" @bind-Value="@_searchString" Margin="Margin.Dense" Class="mt-0"></MudTextField>
-        <MudSpacer />
-        <MudDateRangePicker Label="Period" PickerVariant="PickerVariant.Dialog" DateFormat="dd/MM/yyyy"
-            IconSize="Size.Small" Margin="Margin.Dense" InputVariant="Variant.Outlined" TitleDateFormat="dddd, dd MMMM"
-            DateRangeChanged="OnDateRangeChange" DateRange="_dateRange" />
-        <MudIconButton @onclick="CreateExpense" Icon="@Icons.Material.Outlined.AddCircleOutline" Color="Color.Primary" />
+        <div style="display: flex; justify-content: space-between; width: 100%">
+            <MudTooltip Text="Search your expense" Arrow="true" Placement="Placement.Top">
+                <MudTextField T="string" Label="Search" DebounceInterval="500" Margin="Margin.Dense"
+                    OnDebounceIntervalElapsed="OnSearchStringChanged" Adornment="Adornment.Start"
+                    Variant="Variant.Outlined" AdornmentIcon="@Icons.Material.Filled.Search"
+                    @bind-Value="@_searchString"></MudTextField>
+            </MudTooltip>
+            <MudSpacer />
+            <MudButtonGroup Color="Color.Primary" Size="Size.Medium" Variant="Variant.Filled" Style="margin: 5px 20px;">
+                <MudTooltip Text="Add expense" Arrow="true" Placement="Placement.Top">
+                    <MudIconButton @onclick="CreateExpense" Icon="@Icons.Material.Outlined.AddCircleOutline"
+                        Color="Color.Primary" Variant="Variant.Filled" />
+                </MudTooltip>
+                <MudTooltip Text="Edit expense" Arrow="true" Placement="Placement.Top">
+                    <MudIconButton @onclick="UpdateExpense" Icon="@Icons.Outlined.Edit" Color="Color.Primary"
+                        Disabled="_selectedExpense == null" Variant="Variant.Filled" />
+                </MudTooltip>
+                <MudTooltip Text="Edit expense" Arrow="true" Placement="Placement.Top">
+                    <MudIconButton @onclick="UpdateExpense" Icon="@Icons.Outlined.Edit" Color="Color.Primary"
+                        Disabled="_selectedExpense == null" Variant="Variant.Filled" />
+                </MudTooltip>
+                <MudTooltip Text="Edit expense" Arrow="true" Placement="Placement.Top">
+                    <MudIconButton @onclick="UpdateExpense" Icon="@Icons.Outlined.Edit" Color="Color.Primary"
+                        Disabled="_selectedExpense == null" Variant="Variant.Filled" />
+                </MudTooltip>
+            </MudButtonGroup>
+            <MudTooltip Text="Select date range" Arrow="true" Placement="Placement.Top">
+                <MudDateRangePicker Label="Period" PickerVariant="PickerVariant.Dialog" DateFormat="dd/MM/yyyy"
+                    Margin="Margin.Dense" InputVariant="Variant.Outlined" Style="max-width: 340px;"
+                    DateRange="_dateRange" DateRangeChanged="OnDateRangeChange" TitleDateFormat="dddd, dd MMMM" />
+            </MudTooltip>
+        </div>
     </ToolBarContent>
     <HeaderContent>
         <MudTh>
@@ -31,7 +55,7 @@
         </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Category">@context.CategoryName</MudTd>
+        <MudTd DataLabel="Category">@context.Category.Name</MudTd>
         <MudTd DataLabel="Description">@context.Description</MudTd>
         <MudTd DataLabel="Amount">@context.Amount</MudTd>
         <MudTd DataLabel="CreatedDate">@context.CreatedDate</MudTd>
@@ -43,6 +67,10 @@
         <MudText>Loading...</MudText>
     </LoadingContent>
     <PagerContent>
-        <MudTablePager />
+        <div class="d-flex flex-column align-center">
+            <MudPagination SelectedChanged="PageChanged"
+                Count="@((_table.GetFilteredItemsCount() + _table.RowsPerPage - 1) / _table.RowsPerPage)"
+                Rectangular="true" Variant="Variant.Filled" Class="my-4" />
+        </div>
     </PagerContent>
 </MudTable>
