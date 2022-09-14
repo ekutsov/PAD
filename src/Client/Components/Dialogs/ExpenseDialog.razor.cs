@@ -8,9 +8,9 @@ public partial class ExpenseDialog
 
     [Parameter] public Expense Expense { get; set; }
 
-    [Inject] protected IFinanceService FinanceService { get; set; }
+    [Parameter] public List<ExpenseCategory> Categories { get; set; }
 
-    protected List<ExpenseCategory> Categories { get; set; } = new();
+    [Inject] protected IFinanceService FinanceService { get; set; }
 
     private ExpenseDTO ExpenseDTO { get; set; } = new();
 
@@ -23,7 +23,6 @@ public partial class ExpenseDialog
             IsEditMode = true;
             ExpenseDTO = new(Expense);
         }
-        Categories = await FinanceService.GetExpenseCategoriesAsync();
     }
 
     protected async Task OnValidSubmit(EditContext context)

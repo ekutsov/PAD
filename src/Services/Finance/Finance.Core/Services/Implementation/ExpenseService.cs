@@ -26,7 +26,7 @@ public class ExpenseService : BaseService, IExpenseService
         List<ExpenseViewModel> expenses = await query
             .ProjectTo<ExpenseViewModel>(_mapperProvider)
             // .OrderByDirection(tableState.SortLabel, tableState.SortDirection)
-            .Skip(tableState.Page)
+            .Skip(tableState.Page * tableState.PageSize)
             .Take(tableState.PageSize)
             .ToListAsync();
 
@@ -61,6 +61,18 @@ public class ExpenseService : BaseService, IExpenseService
             _mapper.Map(expenseDTO, expense);
 
             _context.Expsenses.Update(expense);
+
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task DeleteAsync(Guid id, Guid userId)
+    {
+        Expense? expense = await _context.Expsenses.FirstOrDefaultAsync(e => e.Id == id && e.AuthorId == userId);
+
+        if(expense != null)
+        {
+            _context.Expsenses.Remove(expense);
 
             await _context.SaveChangesAsync();
         }

@@ -47,7 +47,7 @@ public partial class MainLayout
 
     private ThemeManagerTheme _themeManager = new ThemeManagerTheme()
     {
-        DrawerClipMode = DrawerClipMode.Always,
+        DrawerClipMode = DrawerClipMode.Docked,
         FontFamily = "Montserrat",
         Theme = new MudTheme()
         {

@@ -7,14 +7,13 @@
 <MudLayout>
     <MudAppBar Elevation="_themeManager.AppBarElevation">
         <MudTooltip Text="Toogle sidebar" Arrow="true" Placement="Placement.Bottom">
-            <MudIconButton Icon="@Icons.Material.Outlined.Menu" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"
-                Size="Size.Large" />
+            <MudIconButton Icon="@Icons.Material.Outlined.Menu" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         </MudTooltip>
         <MudText Typo="Typo.h5" Class="mt-1 w-100 text-center">Personal Assistant for Development</MudText>
         <MudSpacer />
         <MudTooltip Text="Settings" Arrow="true" Placement="Placement.Bottom">
-            <MudMenu Class="main-menu" Icon="@Icons.Material.Outlined.Settings" Size="Size.Large"
-                AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+            <MudMenu Class="main-menu" Icon="@Icons.Material.Outlined.Settings" AnchorOrigin="Origin.BottomRight"
+                TransformOrigin="Origin.TopRight">
                 <MudMenuItem Class="main-menu-item"
                     Icon="@(_isDarkMode ? Icons.Outlined.LightMode : Icons.Outlined.DarkMode)"
                     OnClick="@ThemeModeToogle" IconColor="Color.Default">

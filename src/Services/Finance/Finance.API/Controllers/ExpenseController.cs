@@ -46,4 +46,12 @@ public class ExpenseController : BaseController<IExpenseService>
 
         return Ok();
     }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Delete([FromRoute] Guid id)
+    {
+        await _service.DeleteAsync(id, UserId);
+
+        return Ok();
+    }
 }

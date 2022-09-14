@@ -2,41 +2,33 @@
 
 <PageTitle>Operations</PageTitle>
 
-<MudText Typo="Typo.h5" Style="margin: 24px 0;">Operations</MudText>
+<MudToolBar>
+    <MudText Typo="Typo.h6" Class="mt-1">Operations</MudText>
+    <MudSpacer />
+    <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled">
+        <MudButton StartIcon="@Icons.Material.Outlined.Add" @onclick="CreateExpense" />
+        <MudButton StartIcon="@Icons.Material.Outlined.Edit" @onclick="UpdateExpense"
+            Disabled="_table.SelectedItem == null" />
+        <MudButton StartIcon="@Icons.Material.Outlined.Delete" @onclick="DeleteExpense"
+            Disabled="_table.SelectedItem == null" />
+    </MudButtonGroup>
+</MudToolBar>
 
-<MudTable ServerData="@(new Func<TableState, Task<TableData<Models.Expense>>>(ServerReload))" Bordered="true"
-    Hover="true" @ref="_table" RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="Expense">
+<MudTable Loading="isLoading" ServerData="@(new Func<TableState, Task<TableData<Models.Expense>>>(ServerReload))"
+    Hover="true" @ref="_table" @bind-RowClassFunc="RowClass" OnRowClick="RowClickEvent" T="Expense">
     <ToolBarContent>
-        <div style="display: flex; justify-content: space-between; width: 100%">
+        <div class="pad-flex-toolbar">
             <MudTooltip Text="Search your expense" Arrow="true" Placement="Placement.Top">
                 <MudTextField T="string" Label="Search" DebounceInterval="500" Margin="Margin.Dense"
                     OnDebounceIntervalElapsed="OnSearchStringChanged" Adornment="Adornment.Start"
-                    Variant="Variant.Outlined" AdornmentIcon="@Icons.Material.Filled.Search"
+                    Variant="Variant.Outlined" AdornmentIcon="@Icons.Material.Outlined.Search"
                     @bind-Value="@_searchString"></MudTextField>
             </MudTooltip>
             <MudSpacer />
-            <MudButtonGroup Color="Color.Primary" Size="Size.Medium" Variant="Variant.Filled" Style="margin: 5px 20px;">
-                <MudTooltip Text="Add expense" Arrow="true" Placement="Placement.Top">
-                    <MudIconButton @onclick="CreateExpense" Icon="@Icons.Material.Outlined.AddCircleOutline"
-                        Color="Color.Primary" Variant="Variant.Filled" />
-                </MudTooltip>
-                <MudTooltip Text="Edit expense" Arrow="true" Placement="Placement.Top">
-                    <MudIconButton @onclick="UpdateExpense" Icon="@Icons.Outlined.Edit" Color="Color.Primary"
-                        Disabled="_selectedExpense == null" Variant="Variant.Filled" />
-                </MudTooltip>
-                <MudTooltip Text="Edit expense" Arrow="true" Placement="Placement.Top">
-                    <MudIconButton @onclick="UpdateExpense" Icon="@Icons.Outlined.Edit" Color="Color.Primary"
-                        Disabled="_selectedExpense == null" Variant="Variant.Filled" />
-                </MudTooltip>
-                <MudTooltip Text="Edit expense" Arrow="true" Placement="Placement.Top">
-                    <MudIconButton @onclick="UpdateExpense" Icon="@Icons.Outlined.Edit" Color="Color.Primary"
-                        Disabled="_selectedExpense == null" Variant="Variant.Filled" />
-                </MudTooltip>
-            </MudButtonGroup>
             <MudTooltip Text="Select date range" Arrow="true" Placement="Placement.Top">
                 <MudDateRangePicker Label="Period" PickerVariant="PickerVariant.Dialog" DateFormat="dd/MM/yyyy"
-                    Margin="Margin.Dense" InputVariant="Variant.Outlined" Style="max-width: 340px;"
-                    DateRange="_dateRange" DateRangeChanged="OnDateRangeChange" TitleDateFormat="dddd, dd MMMM" />
+                    Margin="Margin.Dense" InputVariant="Variant.Outlined" IconSize="Size.Small" DateRange="_dateRange"
+                    DateRangeChanged="OnDateRangeChange" TitleDateFormat="dddd, dd MMMM" />
             </MudTooltip>
         </div>
     </ToolBarContent>
@@ -67,10 +59,6 @@
         <MudText>Loading...</MudText>
     </LoadingContent>
     <PagerContent>
-        <div class="d-flex flex-column align-center">
-            <MudPagination SelectedChanged="PageChanged"
-                Count="@((_table.GetFilteredItemsCount() + _table.RowsPerPage - 1) / _table.RowsPerPage)"
-                Rectangular="true" Variant="Variant.Filled" Class="my-4" />
-        </div>
+        <MudTablePager />
     </PagerContent>
 </MudTable>

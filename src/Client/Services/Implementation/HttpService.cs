@@ -19,7 +19,10 @@ public abstract class HttpService
 
     protected async Task CreateAsync<TValue>(string path, TValue model) =>
         await _client.PostAsJsonAsync(path, model);
-    
+
     protected async Task UpdateAsync<TValue>(string path, TValue model) =>
         await _client.PutAsJsonAsync(path, model);
+
+    protected async Task DeleteAsync(string path) =>
+        await _client.DeleteAsync(path);
 }

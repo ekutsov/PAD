@@ -19,4 +19,6 @@ public interface IExpenseService
     Task CreateAsync(ExpenseDTO expenseDTO, Guid userId);
 
     Task UpdateAsync(Guid id, ExpenseDTO expenseDTO, Guid userId);
+
+    Task DeleteAsync(Guid id, Guid userId);
 }

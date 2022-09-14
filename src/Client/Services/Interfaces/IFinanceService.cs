@@ -9,4 +9,6 @@ public interface IFinanceService
     Task CreateExpenseAsync(ExpenseDTO expense);
 
     Task UpdateExpenseAsync(Guid id, ExpenseDTO expense);
+
+    Task DeleteExpenseAsync(Guid id);
 }

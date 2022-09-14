@@ -8,7 +8,7 @@ public partial class Operations
 
     [Inject] private IDialogService DialogService { get; set; }
 
-    private Expense _selectedExpense = null;
+    private List<ExpenseCategory> Categories { get; set; }
 
     private int _selectedRowNumber = -1;
 
@@ -18,6 +18,14 @@ public partial class Operations
 
     private DateRange _dateRange = new DateRange(DateTime.Now.FirstDayOfMonth(), DateTime.Now.LastDayOfMonth());
 
+    private bool isLoading = true;
+
+    private Func<Expense, int, string> RowClass
+    {
+        get => new Func<Expense, int, string>(SelectedRowClassFunc);
+        set { return; }
+    }
+
     private DialogOptions _dialogOptions = new()
     {
         CloseButton = true,
@@ -25,48 +33,41 @@ public partial class Operations
         MaxWidth = MaxWidth.Medium
     };
 
+    protected override async Task OnInitializedAsync()
+    {
+        Categories = await FinanceService.GetExpenseCategoriesAsync();
+    }
 
-    private async Task<TableData<Expense>> ServerReload(TableState state) =>
-        await FinanceService.GetPagedExpensesAsync(new TableStateDTO(_searchString, _dateRange, state));
+    private async Task<TableData<Expense>> ServerReload(TableState state)
+    {
+        isLoading = true;
+        TableStateDTO tableStateDTO = new(_searchString, _dateRange, state);
+        TableData<Expense> expenses = await FinanceService.GetPagedExpensesAsync(tableStateDTO);
+        isLoading = false;
+        return expenses;
+    }
 
-    private void OnSearchStringChanged() => _table.ReloadServerData();
+    private async Task OnSearchStringChanged() => await _table.ReloadServerData();
 
-    private void OnDateRangeChange(DateRange dateRange)
+    private async Task OnDateRangeChange(DateRange dateRange)
     {
         _dateRange = dateRange;
-        _table.ReloadServerData();
+        await _table.ReloadServerData();
     }
 
     private void RowClickEvent(TableRowClickEventArgs<Expense> tableRowClickEventArgs)
     {
-        
+
     }
 
-    private void PageChanged(int i) => _table.NavigateTo(i - 1);
-
-    private string SelectedRowClassFunc(Expense expense, int rowNumber)
-    {
-        if (_selectedRowNumber == rowNumber)
-        {
-            _selectedRowNumber = -1;
-            _selectedExpense = null;
-            return string.Empty;
-        }
-        else if (_table.SelectedItem != null && _table.SelectedItem.Equals(expense))
-        {
-            _selectedRowNumber = rowNumber;
-            _selectedExpense = expense;
-            return "selected";
-        }
-        else
-        {
-            return string.Empty;
-        }
-    }
+    private string SelectedRowClassFunc(Expense expense, int rowNumber) =>
+        _table.SelectedItem != null && _table.SelectedItem.Equals(expense) ? "selected" : string.Empty;
 
     private async Task CreateExpense()
     {
-        IDialogReference expenseDialog = DialogService.Show<ExpenseDialog>("Create expense", _dialogOptions);
+        DialogParameters parameters = new() { ["Categories"] = Categories };
+
+        IDialogReference expenseDialog = DialogService.Show<ExpenseDialog>("Add expense", parameters, _dialogOptions);
 
         DialogResult result = await expenseDialog.Result;
 
@@ -78,15 +79,43 @@ public partial class Operations
 
     private async Task UpdateExpense()
     {
-        DialogParameters parameters = new() { ["Expense"] = _selectedExpense };
+        DialogParameters parameters = new() { ["Expense"] = _table.SelectedItem, ["Categories"] = Categories };
 
-        IDialogReference expenseDialog = DialogService.Show<ExpenseDialog>("Update expense", parameters, _dialogOptions);
+        IDialogReference expenseDialog = DialogService.Show<ExpenseDialog>("Edit expense", parameters, _dialogOptions);
 
         DialogResult result = await expenseDialog.Result;
 
         if (!result.Cancelled)
         {
             await _table.ReloadServerData();
+        }
+    }
+
+    private async Task DeleteExpense()
+    {
+        DialogParameters parameters = new()
+        {
+            ["ContentText"] = "Do you really want to delete this expense? This process cannot be undone.",
+            ["ButtonText"] = "Delete",
+            ["Color"] = Color.Error
+        };
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        IDialogReference deleteExpenseDialog = DialogService.Show<ConfirmDialog>("Delete expense", parameters, options);
+
+        DialogResult result = await deleteExpenseDialog.Result;
+
+        if (!result.Cancelled)
+        {
+            bool.TryParse(result.Data.ToString(), out bool isDelete);
+
+            if (isDelete)
+            {
+                await FinanceService.DeleteExpenseAsync(_table.SelectedItem.Id);
+
+                await _table.ReloadServerData();
+            }
         }
     }
 }
