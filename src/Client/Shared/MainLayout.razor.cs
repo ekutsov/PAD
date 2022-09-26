@@ -12,10 +12,6 @@ public partial class MainLayout
 
     private bool _isDarkMode = true;
 
-    protected override void OnInitialized() => State.OnChange += StateHasChanged;
-
-    public void Dispose() => State.OnChange -= StateHasChanged;
-
     private void DrawerToggle() => _drawerOpen = !_drawerOpen;
 
     private void ThemeModeToogle() => _isDarkMode = !_isDarkMode;

@@ -37,8 +37,11 @@ public partial class Operations
 
     protected override async Task OnInitializedAsync()
     {
+        State.OnChange += StateHasChanged;
         Categories = await FinanceService.GetExpenseCategoriesAsync();
     }
+
+    public void Dispose() => State.OnChange -= StateHasChanged;
 
     private async Task<TableData<Expense>> ServerReload(TableState state)
     {

@@ -21,7 +21,7 @@
     </MudButtonGroup>
 </MudToolBar>
 
-<MudTable ServerData="@(new Func<TableState, Task<TableData<Models.Expense>>>(ServerReload))" Hover="true" @ref="_table"
+<MudTable Loading="State.IsLoading" ServerData="@(new Func<TableState, Task<TableData<Models.Expense>>>(ServerReload))" Hover="true" @ref="_table"
     @bind-RowClassFunc="RowClass" OnRowClick="RowClickEvent" T="Expense">
     <ToolBarContent>
         <div class="pad-flex-toolbar">
