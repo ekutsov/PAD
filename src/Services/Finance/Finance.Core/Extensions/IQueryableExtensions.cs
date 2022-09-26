@@ -7,6 +7,8 @@ public static class IQueryableExtensions
 {
     public static IQueryable<TSource> OrderByDirection<TSource>(this IQueryable<TSource> query, string sortColumn, SortDirection sortDirection)
     {
+        if (string.IsNullOrWhiteSpace(sortColumn) || sortDirection == SortDirection.None) sortColumn = "Id";
+
         ParameterExpression parameter = Expression.Parameter(typeof(TSource), "item");
 
         MemberExpression member = Expression.Property(parameter, sortColumn);

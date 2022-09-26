@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace PAD.Client.Components.Dialogs;
+namespace PAD.Client.Shared.Dialogs;
 
 public partial class ExpenseDialog
 {
     [CascadingParameter] protected MudDialogInstance MudDialog { get; set; }
+
+    [Inject] protected StateContainer State { get; set; }
 
     [Parameter] public Expense Expense { get; set; }
 
@@ -21,7 +23,7 @@ public partial class ExpenseDialog
         if (Expense != null)
         {
             IsEditMode = true;
-            ExpenseDTO = new(Expense);
+            ExpenseDTO = new(Expense, State.TimezoneOffset);
         }
     }
 

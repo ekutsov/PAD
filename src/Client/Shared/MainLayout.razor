@@ -6,12 +6,12 @@
 
 <MudLayout>
     <MudAppBar Elevation="_themeManager.AppBarElevation">
-        <MudTooltip Text="Toogle sidebar" Arrow="true" Placement="Placement.Bottom">
+        <MudTooltip Text="Toogle sidebar" Arrow="true" Placement="Placement.Right">
             <MudIconButton Icon="@Icons.Material.Outlined.Menu" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         </MudTooltip>
         <MudText Typo="Typo.h5" Class="mt-1 w-100 text-center">Personal Assistant for Development</MudText>
         <MudSpacer />
-        <MudTooltip Text="Settings" Arrow="true" Placement="Placement.Bottom">
+        <MudTooltip Text="Settings" Arrow="true" Placement="Placement.Left">
             <MudMenu Class="main-menu" Icon="@Icons.Material.Outlined.Settings" AnchorOrigin="Origin.BottomRight"
                 TransformOrigin="Origin.TopRight">
                 <MudMenuItem Class="main-menu-item"
@@ -28,7 +28,7 @@
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="_themeManager.DrawerClipMode"
         Elevation="_themeManager.DrawerElevation">
-        <MudNavMenu Bordered="true" Margin="Margin.Dense">
+        <MudNavMenu Bordered="true">
             <MudNavLink Href="" Match="NavLinkMatch.All" DisableRipple="true" Icon="@Icons.Material.Outlined.Home">Home
             </MudNavLink>
             <MudNavGroup Title="Finance" DisableRipple="true" Icon="@Icons.Outlined.CurrencyRuble">
@@ -40,12 +40,15 @@
         </MudNavMenu>
     </MudDrawer>
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
+        <MudContainer Style="height: 100%" MaxWidth="MaxWidth.ExtraExtraLarge">
+            <MudOverlay Visible="State.IsLoading"
+                Style="height: 100%; position: static; background-color: transparent;">
+                <div class="d-flex flex-column justify-content-end align-items-center">
+                    <div class="spinner"></div>
+                    <div style="font-size: 18px; margin-top: 10px;">Loading</div>
+                </div>
+            </MudOverlay>
             @Body
         </MudContainer>
     </MudMainContent>
 </MudLayout>
-
-@* <MudThemeManagerButton OnClick="@((e) => OpenThemeManager(true))" />
-    <MudThemeManager ColorPickerView="ColorPickerView.Grid" Open="_themeManagerOpen" OpenChanged="OpenThemeManager"
-    Theme="_themeManager" ThemeChanged="UpdateTheme" /> *@

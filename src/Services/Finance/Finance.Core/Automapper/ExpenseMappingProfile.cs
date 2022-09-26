@@ -7,8 +7,7 @@ public class EquipmentMappingProfile : Profile
         CreateMap<ExpenseDTO, Expense>(MemberList.Source)
             .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate.ToUniversalTime()));
 
-        CreateMap<Expense, ExpenseViewModel>()
-            .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate.ToLocalTime()));
+        CreateMap<Expense, ExpenseViewModel>();
 
         CreateMap<ExpenseCategory, ExpenseCategoryViewModel>();
     }

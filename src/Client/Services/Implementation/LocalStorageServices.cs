@@ -1,6 +1,3 @@
-using System.Text.Json;
-using Microsoft.JSInterop;
-
 namespace PAD.Client.Services;
 
 public class LocalStorageService : ILocalStorageService

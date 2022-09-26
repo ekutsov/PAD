@@ -10,5 +10,7 @@ public class ExpenseViewModel
 
     public double Amount { get; set; }
 
-    public ExpenseCategoryViewModel Category { get; set; }
+    public Guid CategoryId { get; set; }
+
+    public string CategoryName { get; set; }
 }

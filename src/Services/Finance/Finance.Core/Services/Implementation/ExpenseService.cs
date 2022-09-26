@@ -25,7 +25,7 @@ public class ExpenseService : BaseService, IExpenseService
 
         List<ExpenseViewModel> expenses = await query
             .ProjectTo<ExpenseViewModel>(_mapperProvider)
-            // .OrderByDirection(tableState.SortLabel, tableState.SortDirection)
+            .OrderByDirection(tableState.SortLabel, tableState.SortDirection)
             .Skip(tableState.Page * tableState.PageSize)
             .Take(tableState.PageSize)
             .ToListAsync();

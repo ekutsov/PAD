@@ -1,11 +1,11 @@
 @inherits ComponentBase
 
-<div class="d-flex flex-column justify-content-end align-items-center" style="width: 100%; height: 50vh;">
+<div class="d-flex flex-column justify-content-end align-items-center"
+    style="width: 100%; height: 50vh; background-color: transparent;">
     <div class="spinner"></div>
     <div style="font-size: 18px; margin-top: 10px;">@Text</div>
 </div>
 
 @code {
-    [Parameter]
-    public string Text { get; set; }
+    [Parameter] public string Text { get; set; }
 }

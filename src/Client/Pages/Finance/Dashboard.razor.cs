@@ -1,38 +1,10 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
-
 namespace PAD.Client.Pages;
 
 [Authorize]
 [Route("finance/dashboard")]
 public partial class Dashboard
 {
-    public bool showDataLabels = false;
-
-    public DataItem[] revenue = new DataItem[] {
-        new DataItem {
-            Quarter = "Q1",
-            Revenue = 30000
-        },
-        new DataItem {
-            Quarter = "Q2",
-            Revenue = 40000
-        },
-        new DataItem {
-            Quarter = "Q3",
-            Revenue = 50000
-        },
-        new DataItem
-        {
-            Quarter = "Q4",
-            Revenue = 80000
-        },
-    };
-}
-
-public class DataItem
-{
-    public string Quarter { get; set; }
-
-    public double Revenue { get; set; }
+    private int Index = -1;
+    public double[] data = { 50, 25, 20, 5 };
+    public string[] labels = { "Fossile", "Nuclear", "Solar", "Wind" };
 }

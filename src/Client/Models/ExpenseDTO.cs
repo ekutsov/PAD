@@ -5,10 +5,10 @@ namespace PAD.Client.Models;
 public class ExpenseDTO
 {
     public ExpenseDTO() { }
-    public ExpenseDTO(Expense expense)
+    public ExpenseDTO(Expense expense, int timezoneOffset)
     {
-        CategoryId = expense.Category.Id;
-        CreatedDate = expense.CreatedDate;
+        CategoryId = expense.CategoryId;
+        CreatedDate = expense.CreatedDate.AddMinutes(timezoneOffset);
         Description = expense.Description;
         Amount = expense.Amount;
     }

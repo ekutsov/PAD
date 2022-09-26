@@ -8,17 +8,19 @@ public partial class Operations
 
     [Inject] private IDialogService DialogService { get; set; }
 
-    private List<ExpenseCategory> Categories { get; set; }
+    [Inject] private StateContainer State { get; set; }
 
-    private int _selectedRowNumber = -1;
+    [Inject] private ISnackbarService Snackbar { get; set; }
+
+    private List<ExpenseCategory> Categories { get; set; }
 
     private MudTable<Expense> _table;
 
     private string _searchString = String.Empty;
 
-    private DateRange _dateRange = new DateRange(DateTime.Now.FirstDayOfMonth(), DateTime.Now.LastDayOfMonth());
+    private Guid? selectedRowId = null;
 
-    private bool isLoading = true;
+    private DateRange _dateRange = new DateRange(DateTime.Now.FirstDayOfMonth(), DateTime.Now.LastDayOfMonth());
 
     private Func<Expense, int, string> RowClass
     {
@@ -40,10 +42,10 @@ public partial class Operations
 
     private async Task<TableData<Expense>> ServerReload(TableState state)
     {
-        isLoading = true;
         TableStateDTO tableStateDTO = new(_searchString, _dateRange, state);
+
         TableData<Expense> expenses = await FinanceService.GetPagedExpensesAsync(tableStateDTO);
-        isLoading = false;
+
         return expenses;
     }
 
@@ -57,11 +59,19 @@ public partial class Operations
 
     private void RowClickEvent(TableRowClickEventArgs<Expense> tableRowClickEventArgs)
     {
-
+        if (selectedRowId == tableRowClickEventArgs.Item.Id)
+        {
+            selectedRowId = null;
+            _table.SelectedItem = null;
+        }
+        else
+        {
+            selectedRowId = tableRowClickEventArgs.Item.Id;
+        }
     }
 
-    private string SelectedRowClassFunc(Expense expense, int rowNumber) =>
-        _table.SelectedItem != null && _table.SelectedItem.Equals(expense) ? "selected" : string.Empty;
+    private string SelectedRowClassFunc(Expense element, int rowNumber) =>
+        selectedRowId == element.Id ? "selected" : string.Empty;
 
     private async Task CreateExpense()
     {
@@ -73,6 +83,7 @@ public partial class Operations
 
         if (!result.Cancelled)
         {
+            Snackbar.Success("The expense was created");
             await _table.ReloadServerData();
         }
     }
@@ -87,6 +98,7 @@ public partial class Operations
 
         if (!result.Cancelled)
         {
+            Snackbar.Success("The expense was updated");
             await _table.ReloadServerData();
         }
     }
@@ -113,6 +125,8 @@ public partial class Operations
             if (isDelete)
             {
                 await FinanceService.DeleteExpenseAsync(_table.SelectedItem.Id);
+
+                Snackbar.Success("The expense was deleted");
 
                 await _table.ReloadServerData();
             }

@@ -1,5 +1,3 @@
-using Microsoft.JSInterop;
-
 namespace PAD.Client.Services;
 
 public class ConsoleService : IConsoleService

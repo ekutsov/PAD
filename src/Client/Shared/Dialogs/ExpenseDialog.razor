@@ -1,11 +1,11 @@
-@namespace PAD.Client.Components.Dialogs
+@namespace PAD.Client.Shared.Dialogs
 
 <EditForm Model="@ExpenseDTO" OnValidSubmit="OnValidSubmit">
     <MudGrid Style="padding: 0 24px 24px 24px;">
         <DataAnnotationsValidator />
         <MudItem xs="12" sm="8">
             <MudDatePicker PickerVariant="PickerVariant.Static" Orientation="Orientation.Landscape"
-                @bind-Date="ExpenseDTO.CreatedDate" For="@(() => ExpenseDTO.CreatedDate)" />
+                @bind-Date="ExpenseDTO.CreatedDate" For="@(() => ExpenseDTO.CreatedDate)" DateFormat="yyyy-MM-dd hh:mm:sszzz" />
         </MudItem>
         <MudItem xs="12" sm="4" Class="mud-height-full"
             Style="height: inherit; display: flex; flex-direction: column; justify-content: space-between;">

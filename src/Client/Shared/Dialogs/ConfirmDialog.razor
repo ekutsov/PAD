@@ -1,4 +1,4 @@
-@namespace PAD.Client.Components.Dialogs
+@namespace PAD.Client.Shared.Dialogs
 
 <MudDialog>
     <DialogContent>
@@ -9,6 +9,7 @@
         <MudButton Color="@Color" Variant="Variant.Filled" OnClick="Submit">@ButtonText</MudButton>
     </DialogActions>
 </MudDialog>
+
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
@@ -19,5 +20,6 @@
     [Parameter] public Color Color { get; set; }
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    
     void Cancel() => MudDialog.Cancel();
 }

@@ -5,17 +5,24 @@
 <MudToolBar>
     <MudText Typo="Typo.h6" Class="mt-1">Operations</MudText>
     <MudSpacer />
-    <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled">
-        <MudButton StartIcon="@Icons.Material.Outlined.Add" @onclick="CreateExpense" />
-        <MudButton StartIcon="@Icons.Material.Outlined.Edit" @onclick="UpdateExpense"
-            Disabled="_table.SelectedItem == null" />
-        <MudButton StartIcon="@Icons.Material.Outlined.Delete" @onclick="DeleteExpense"
-            Disabled="_table.SelectedItem == null" />
+    <MudButtonGroup OverrideStyles="false" Variant="Variant.Filled">
+        <MudTooltip Text="Create expense" Arrow="true" Placement="Placement.Top">
+            <MudIconButton Icon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Success"
+                Size="Size.Medium" @onclick="CreateExpense" Disabled="_table.SelectedItem != null" />
+        </MudTooltip>
+        <MudTooltip Text="Update expense" Arrow="true" Placement="Placement.Top">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Warning"
+                Size="Size.Medium" @onclick="UpdateExpense" Disabled="_table.SelectedItem == null" />
+        </MudTooltip>
+        <MudTooltip Text="Delete expense" Arrow="true" Placement="Placement.Top">
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error"
+                Size="Size.Medium" @onclick="DeleteExpense" Disabled="_table.SelectedItem == null" />
+        </MudTooltip>
     </MudButtonGroup>
 </MudToolBar>
 
-<MudTable Loading="isLoading" ServerData="@(new Func<TableState, Task<TableData<Models.Expense>>>(ServerReload))"
-    Hover="true" @ref="_table" @bind-RowClassFunc="RowClass" OnRowClick="RowClickEvent" T="Expense">
+<MudTable ServerData="@(new Func<TableState, Task<TableData<Models.Expense>>>(ServerReload))" Hover="true" @ref="_table"
+    @bind-RowClassFunc="RowClass" OnRowClick="RowClickEvent" T="Expense">
     <ToolBarContent>
         <div class="pad-flex-toolbar">
             <MudTooltip Text="Search your expense" Arrow="true" Placement="Placement.Top">
@@ -47,10 +54,10 @@
         </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Category">@context.Category.Name</MudTd>
+        <MudTd DataLabel="Category">@context.CategoryName</MudTd>
         <MudTd DataLabel="Description">@context.Description</MudTd>
         <MudTd DataLabel="Amount">@context.Amount</MudTd>
-        <MudTd DataLabel="CreatedDate">@context.CreatedDate</MudTd>
+        <MudTd DataLabel="CreatedDate">@context.CreatedDate.AddMinutes(State.TimezoneOffset).ToShortDateString()</MudTd>
     </RowTemplate>
     <NoRecordsContent>
         <MudText>No matching records found</MudText>

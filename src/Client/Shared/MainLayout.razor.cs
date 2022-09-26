@@ -1,57 +1,38 @@
-using MudBlazor.ThemeManager;
-using Microsoft.JSInterop;
-
 namespace PAD.Client.Shared;
 
 public partial class MainLayout
 {
-    [Inject]
-    protected NavigationManager Navigation { get; set; }
+    [Inject] protected NavigationManager Navigation { get; set; }
 
-    [Inject]
-    protected SignOutSessionStateManager SignOutManager { get; set; }
+    [Inject] protected SignOutSessionStateManager SignOutManager { get; set; }
 
-    [Inject]
-    protected IJSRuntime _jsRuntime { get; set; }
+    [Inject] protected StateContainer State { get; set; }
 
     private bool _drawerOpen = true;
 
-    private bool _isDarkMode;
+    private bool _isDarkMode = true;
 
-    async Task Logout()
+    protected override void OnInitialized() => State.OnChange += StateHasChanged;
+
+    public void Dispose() => State.OnChange -= StateHasChanged;
+
+    private void DrawerToggle() => _drawerOpen = !_drawerOpen;
+
+    private void ThemeModeToogle() => _isDarkMode = !_isDarkMode;
+
+    private async Task Logout()
     {
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo("authentication/logout");
     }
 
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
-
-    void ThemeModeToogle()
-    {
-        _isDarkMode = !_isDarkMode;
-    }
-
-    
-
-    private MudTheme _theme = new()
-    {
-        Palette = new()
-        {
-            AppbarBackground = Colors.Grey.Lighten1,
-            AppbarText = Colors.Grey.Darken4
-        }
-    };
-
-    private ThemeManagerTheme _themeManager = new ThemeManagerTheme()
+    private ThemeManagerTheme _themeManager = new()
     {
         DrawerClipMode = DrawerClipMode.Docked,
         FontFamily = "Montserrat",
         Theme = new MudTheme()
         {
-            Palette = new Palette()
+            Palette = new()
             {
                 AppbarBackground = Colors.Shades.White,
                 AppbarText = Colors.Grey.Darken3,
@@ -59,22 +40,4 @@ public partial class MainLayout
             }
         }
     };
-
-    public bool _themeManagerOpen = false;
-
-    void OpenThemeManager(bool value)
-    {
-        _themeManagerOpen = value;
-    }
-
-    void UpdateTheme(ThemeManagerTheme value)
-    {
-        _themeManager = value;
-        StateHasChanged();
-    }
-
-    protected override void OnInitialized()
-    {
-        StateHasChanged();
-    }
 }

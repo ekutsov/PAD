@@ -1,3 +1,10 @@
+@using PAD.Client.Components.Charts
 @namespace PAD.Client.Pages
 
 <PageTitle>Dashboard</PageTitle>
+
+<MudPaper Class="pa-4">
+    <PADDonut ChartType="PAD.Client.Components.Charts.ChartType.Donut" LegendPosition="Position.Right" Width="300px" Height="300px" InputData="@data"
+        InputLabels="@labels" @bind-SelectedIndex="Index">
+    </PADDonut>
+</MudPaper>
