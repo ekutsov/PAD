@@ -1,12 +1,15 @@
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-
-html,
-body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+* {
+    font-family: 'Montserrat', sans-serif !important;
 }
 
-body {
-    background: white !important;
+html {
+    height: 100vh;
+}
+
+body,
+.app,
+.mud-main-content {
+    height: inherit;
 }
 
 a,
@@ -61,9 +64,7 @@ a,
     aspect-ratio: 1;
     border-radius: 50%;
     background: #514b82;
-    -webkit-mask:
-        repeating-conic-gradient(#0000 0deg, #000 1deg 70deg, #0000 71deg 90deg),
-        radial-gradient(farthest-side, #0000 calc(100% - var(--b) - 1px), #000 calc(100% - var(--b)));
+    -webkit-mask: repeating-conic-gradient(#0000 0deg, #000 1deg 70deg, #0000 71deg 90deg), radial-gradient(farthest-side, #0000 calc(100% - var(--b) - 1px), #000 calc(100% - var(--b)));
     -webkit-mask-composite: destination-in;
     mask-composite: intersect;
     animation: sp 1s infinite;
@@ -73,4 +74,57 @@ a,
     to {
         transform: rotate(.5turn)
     }
+}
+
+.main-menu-item .mud-list-item-icon {
+    min-width: 35px !important;
+}
+
+.mud-nav-menu {
+    font-size: 1rem !important;
+}
+
+.mud-nav-link:hover {
+    color: var(--mud-palette-primary);
+}
+
+.selected {
+    background-color: var(--mud-palette-primary) !important;
+}
+
+.selected>td,
+.selected>td .mud-input,
+.selected>td span {
+    color: white !important;
+}
+
+.mud-table-row {
+    cursor: pointer;
+}
+
+.pad-flex-toolbar {
+    display: flex;
+    justify-content: space-between;
+    width: 100%
+}
+
+.pad-flex-toolbar>* {
+    flex: 1;
+}
+
+.mud-table-toolbar {
+    padding-right: 16px !important;
+    padding-inline-end: 16px !important;
+}
+
+@media (min-width: 600px) {
+    .mud-toolbar-gutters {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+}
+
+.mud-table-toolbar
+{
+    border-bottom: 1px solid var(--mud-palette-table-lines);
 }

@@ -1,10 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace PAD.Finance.Infrastructure.Models;
 
-public abstract class BaseEntity<T>
+public abstract class BaseEntity
 {
-    protected T Id { get; set; }
-
-    protected DateTime CreatedDate { get; set; }
-
-    protected DateTime UpdatedDate { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Key]
+    public Guid Id { get; set; }
 }

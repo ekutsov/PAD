@@ -1,0 +1,33 @@
+@namespace PAD.Client.Shared.Dialogs
+
+<EditForm Model="@ExpenseDTO" OnValidSubmit="OnValidSubmit">
+    <MudGrid Style="padding: 0 24px 24px 24px;">
+        <DataAnnotationsValidator />
+        <MudItem xs="12" sm="8">
+            <MudDatePicker PickerVariant="PickerVariant.Static" Orientation="Orientation.Landscape"
+                @bind-Date="ExpenseDTO.CreatedDate" For="@(() => ExpenseDTO.CreatedDate)" DateFormat="yyyy-MM-dd hh:mm:sszzz" />
+        </MudItem>
+        <MudItem xs="12" sm="4" Class="mud-height-full"
+            Style="height: inherit; display: flex; flex-direction: column; justify-content: space-between;">
+            <MudSelect @bind-Value="ExpenseDTO.CategoryId" Immediate="true"
+                Text="@Categories.FirstOrDefault(x => x.Id == ExpenseDTO.CategoryId)?.Name"
+                For="@(() => ExpenseDTO.CategoryId)" T="Guid?" Label="Category" Margin="Margin.Dense"
+                Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+                @foreach (ExpenseCategory category in Categories)
+                {
+                    <MudSelectItem T="Guid?" Value="category.Id">@category.Name</MudSelectItem>
+                }
+            </MudSelect>
+            <MudNumericField @bind-Value="ExpenseDTO.Amount" For="@(() => ExpenseDTO.Amount)" Label="Amount" Min="0.1"
+                Variant="Variant.Outlined" Margin="Margin.Dense" Immediate="true" />
+            <MudTextField @bind-Value="ExpenseDTO.Description" Label="Decription" Lines="5" Immediate="true"
+                For="@(() => ExpenseDTO.Description)" Variant="Variant.Outlined" Margin="Margin.Dense" />
+            <div class="d-flex justify-content-end">
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
+                    Class="ml-auto">
+                    @(IsEditMode ? "Update": "Create")
+                </MudButton>
+            </div>
+        </MudItem>
+    </MudGrid>
+</EditForm>

@@ -1,136 +1,132 @@
-using System.Linq.Dynamic.Core;
-using Microsoft.JSInterop;
-using Microsoft.AspNetCore.Components;
-using Radzen;
+namespace PAD.Client.Finance;
 
-namespace PAD.Client.Finance
+[Authorize]
+[Route("finance/operations")]
+public partial class Operations
 {
-    public partial class Operations
+    [Inject] private IFinanceService FinanceService { get; set; }
+
+    [Inject] private IDialogService DialogService { get; set; }
+
+    [Inject] private ISnackbarService Snackbar { get; set; }
+
+    [Inject] private StateContainer State { get; set; }
+
+    private List<ExpenseCategory> Categories { get; set; }
+
+    private MudTable<Expense> _table;
+
+    private string _searchString = String.Empty;
+
+    private Guid? selectedRowId = null;
+
+    private DateRange _dateRange = new(DateTime.Now.FirstDayOfMonth(), DateTime.Now.LastDayOfMonth());
+
+    private Func<Expense, int, string> RowClass { get => new(SelectedRowClassFunc); set { return; } }
+
+    private DialogOptions _dialogOptions = new()
     {
-        [Inject]
-        protected IJSRuntime JSRuntime { get; set; }
+        CloseButton = true,
+        CloseOnEscapeKey = true,
+        MaxWidth = MaxWidth.Medium
+    };
 
-        [Inject]
-        protected NavigationManager NavigationManager { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        Categories = await FinanceService.GetExpenseCategoriesAsync();
+    }
 
-        [Inject]
-        protected DialogService DialogService { get; set; }
+    private async Task<TableData<Expense>> ServerReload(TableState state)
+    {
+        TableStateDTO tableStateDTO = new(_searchString, _dateRange, state);
 
-        [Inject]
-        protected TooltipService TooltipService { get; set; }
+        TableData<Expense> expenses = await FinanceService.GetPagedExpensesAsync(tableStateDTO);
 
-        [Inject]
-        protected ContextMenuService ContextMenuService { get; set; }
+        return expenses;
+    }
 
-        [Inject]
-        protected NotificationService NotificationService { get; set; }
+    private async Task OnSearchStringChanged() => await _table.ReloadServerData();
 
-        public int count { get { return AllOrderDetails.Count(); }}
+    private async Task OnDateRangeChange(DateRange dateRange)
+    {
+        _dateRange = dateRange;
+        await _table.ReloadServerData();
+    }
 
-        public IEnumerable<OrderDetail> AllOrderDetails = new OrderDetail[]
+    private void RowClickEvent(TableRowClickEventArgs<Expense> tableRowClickEventArgs)
+    {
+        if (selectedRowId == tableRowClickEventArgs.Item.Id)
         {
-            new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 1500,
-                Quantity = 6,
-                Discount = 0.20
-            },
-            new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 2500,
-                Quantity = 8,
-                Discount = 0.40
-            },
-            new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 3000,
-                Quantity = 3,
-                Discount = 0.15
-            },
-            new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 400,
-                Quantity = 20,
-                Discount = 0.60
-            },
-            new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 800,
-                Quantity = 10,
-                Discount = 0.30
-            },
-            new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 1500,
-                Quantity = 6,
-                Discount = 0.20
-            },
-            new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 2500,
-                Quantity = 8,
-                Discount = 0.40
-            },
-            new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 3000,
-                Quantity = 3,
-                Discount = 0.15
-            },
-            new() {
-                OrderID = Guid.NewGuid().ToString(),
-                ProductID = Guid.NewGuid().ToString(),
-                UnitPrice = 400,
-                Quantity = 20,
-                Discount = 0.60
-            }
-        };
-
-        public IEnumerable<OrderDetail> OrderDetails;
-
-        public IEnumerable<int> PageSizeOptions = new int[] { 5, 10, 25 };
-
-        protected override void OnInitialized()
-        {
-            OrderDetails = AllOrderDetails.Take(5).ToList();
+            selectedRowId = null;
+            _table.SetSelectedItem(null);
         }
-
-        public void LoadData(LoadDataArgs args)
+        else
         {
-            var query = AllOrderDetails.AsQueryable();
-
-            if (!string.IsNullOrEmpty(args.Filter))
-            {
-                query = query.Where(args.Filter);
-            }
-
-            if (!string.IsNullOrEmpty(args.OrderBy))
-            {
-                query = query.OrderBy(args.OrderBy);
-            }
-
-            OrderDetails = query.Skip(args.Skip.Value).Take(args.Top.Value).ToList();
+            selectedRowId = tableRowClickEventArgs.Item.Id;
         }
     }
 
-    public class OrderDetail
+    private string SelectedRowClassFunc(Expense element, int rowNumber) =>
+        selectedRowId == element.Id ? "selected" : string.Empty;
+
+    private void PageChanged(int i) => _table.NavigateTo(i - 1);
+
+    private async Task CreateExpense()
     {
-        public string OrderID { get; set; }
+        DialogParameters parameters = new() 
+        {
+            ["Categories"] = Categories 
+        };
 
-        public string ProductID { get; set; }
+        IDialogReference expenseDialog = DialogService.Show<ExpenseDialog>("Create expense", parameters, _dialogOptions);
 
-        public double UnitPrice { get; set; }
+        DialogResult result = await expenseDialog.Result;
 
-        public int Quantity { get; set; }
+        if (!result.Cancelled) await _table.ReloadServerData();
+    }
 
-        public double Discount { get; set; }
+    private async Task UpdateExpense()
+    {
+        DialogParameters parameters = new()
+        {
+            ["Expense"] = _table.SelectedItem,
+            ["Categories"] = Categories
+        };
+
+        IDialogReference expenseDialog = DialogService.Show<ExpenseDialog>("Edit expense", parameters, _dialogOptions);
+
+        DialogResult result = await expenseDialog.Result;
+
+        if (!result.Cancelled) await _table.ReloadServerData();
+    }
+
+    private async Task DeleteExpense()
+    {
+        DialogParameters parameters = new()
+        {
+            ["ContentText"] = "Do you really want to delete this expense? This process cannot be undone.",
+            ["ButtonText"] = "Delete",
+            ["Color"] = Color.Error
+        };
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        IDialogReference deleteExpenseDialog = DialogService.Show<ConfirmDialog>("Delete expense", parameters, options);
+
+        DialogResult result = await deleteExpenseDialog.Result;
+
+        if (!result.Cancelled)
+        {
+            bool.TryParse(result.Data.ToString(), out bool isDelete);
+
+            if (isDelete)
+            {
+                await FinanceService.DeleteExpenseAsync(_table.SelectedItem.Id);
+
+                Snackbar.Success("The expense was deleted");
+
+                await _table.ReloadServerData();
+            }
+        }
     }
 }
