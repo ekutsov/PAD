@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using PAD.Finance.Domain.Enums;
 
-namespace PAD.Finance.API.Extensions;
+namespace PAD.Finance.Core.Extensions;
 
 public static class IQueryableExtensions
 {

@@ -8,13 +8,54 @@ public partial class MainLayout
 
     [Inject] protected StateContainer State { get; set; }
 
-    private bool _drawerOpen = true;
+    [Inject] protected ILocalStorageService LocalStorage { get; set; }
 
-    private bool _isDarkMode = true;
+    private bool _isDrawerOpen = true;
 
-    private void DrawerToggle() => _drawerOpen = !_drawerOpen;
+    private bool _isDarkMode = false;
 
-    private void ThemeModeToogle() => _isDarkMode = !_isDarkMode;
+
+    protected override async Task OnInitializedAsync()
+    {
+        State.OnChange += StateHasChanged;
+        bool? isDrawerOpen = await LocalStorage.GetItemAsync<bool?>("isDrawerOpen");
+        if (isDrawerOpen != null)
+        {
+            _isDrawerOpen = isDrawerOpen.Value;
+
+        }
+        else
+        {
+            await LocalStorage.SetItemAsync<bool>("isDrawerOpen", _isDarkMode);
+        }
+
+        bool? isDarkMode = await LocalStorage.GetItemAsync<bool?>("isDarkMode");
+        if (isDarkMode != null)
+        {
+            _isDarkMode = isDarkMode.Value;
+
+        }
+        else
+        {
+            await LocalStorage.SetItemAsync<bool>("isDarkMode", _isDarkMode);
+        }
+    }
+
+    public void Dispose() => State.OnChange -= StateHasChanged;
+
+    private async Task<bool> DrawerToggle()
+    {
+        _isDrawerOpen = !_isDrawerOpen;
+        await LocalStorage.SetItemAsync<bool>("isDrawerOpen", _isDrawerOpen);
+        return _isDarkMode;
+    }
+
+    private async Task<bool> ThemeModeToogle()
+    {
+        _isDarkMode = !_isDarkMode;
+        await LocalStorage.SetItemAsync<bool>("isDarkMode", _isDarkMode);
+        return _isDarkMode;
+    }
 
     private async Task Logout()
     {
@@ -24,7 +65,7 @@ public partial class MainLayout
 
     private ThemeManagerTheme _themeManager = new()
     {
-        DrawerClipMode = DrawerClipMode.Docked,
+        DrawerClipMode = DrawerClipMode.Always,
         FontFamily = "Montserrat",
         Theme = new MudTheme()
         {

@@ -8,9 +8,9 @@ public partial class Operations
 
     [Inject] private IDialogService DialogService { get; set; }
 
-    [Inject] private StateContainer State { get; set; }
-
     [Inject] private ISnackbarService Snackbar { get; set; }
+
+    [Inject] private StateContainer State { get; set; }
 
     private List<ExpenseCategory> Categories { get; set; }
 
@@ -20,13 +20,9 @@ public partial class Operations
 
     private Guid? selectedRowId = null;
 
-    private DateRange _dateRange = new DateRange(DateTime.Now.FirstDayOfMonth(), DateTime.Now.LastDayOfMonth());
+    private DateRange _dateRange = new(DateTime.Now.FirstDayOfMonth(), DateTime.Now.LastDayOfMonth());
 
-    private Func<Expense, int, string> RowClass
-    {
-        get => new Func<Expense, int, string>(SelectedRowClassFunc);
-        set { return; }
-    }
+    private Func<Expense, int, string> RowClass { get => new(SelectedRowClassFunc); set { return; } }
 
     private DialogOptions _dialogOptions = new()
     {
@@ -37,11 +33,8 @@ public partial class Operations
 
     protected override async Task OnInitializedAsync()
     {
-        State.OnChange += StateHasChanged;
         Categories = await FinanceService.GetExpenseCategoriesAsync();
     }
-
-    public void Dispose() => State.OnChange -= StateHasChanged;
 
     private async Task<TableData<Expense>> ServerReload(TableState state)
     {
@@ -65,7 +58,7 @@ public partial class Operations
         if (selectedRowId == tableRowClickEventArgs.Item.Id)
         {
             selectedRowId = null;
-            _table.SelectedItem = null;
+            _table.SetSelectedItem(null);
         }
         else
         {
@@ -76,34 +69,35 @@ public partial class Operations
     private string SelectedRowClassFunc(Expense element, int rowNumber) =>
         selectedRowId == element.Id ? "selected" : string.Empty;
 
+    private void PageChanged(int i) => _table.NavigateTo(i - 1);
+
     private async Task CreateExpense()
     {
-        DialogParameters parameters = new() { ["Categories"] = Categories };
+        DialogParameters parameters = new() 
+        {
+            ["Categories"] = Categories 
+        };
 
-        IDialogReference expenseDialog = DialogService.Show<ExpenseDialog>("Add expense", parameters, _dialogOptions);
+        IDialogReference expenseDialog = DialogService.Show<ExpenseDialog>("Create expense", parameters, _dialogOptions);
 
         DialogResult result = await expenseDialog.Result;
 
-        if (!result.Cancelled)
-        {
-            Snackbar.Success("The expense was created");
-            await _table.ReloadServerData();
-        }
+        if (!result.Cancelled) await _table.ReloadServerData();
     }
 
     private async Task UpdateExpense()
     {
-        DialogParameters parameters = new() { ["Expense"] = _table.SelectedItem, ["Categories"] = Categories };
+        DialogParameters parameters = new()
+        {
+            ["Expense"] = _table.SelectedItem,
+            ["Categories"] = Categories
+        };
 
         IDialogReference expenseDialog = DialogService.Show<ExpenseDialog>("Edit expense", parameters, _dialogOptions);
 
         DialogResult result = await expenseDialog.Result;
 
-        if (!result.Cancelled)
-        {
-            Snackbar.Success("The expense was updated");
-            await _table.ReloadServerData();
-        }
+        if (!result.Cancelled) await _table.ReloadServerData();
     }
 
     private async Task DeleteExpense()

@@ -1,5 +1,3 @@
-using MudBlazor.Services;
-
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.RootComponents.Add<App>("#app");
@@ -26,6 +24,8 @@ builder.Services.AddOidcAuthentication(options =>
 });
 
 builder.Services.AddSingleton<IConsoleService, ConsoleService>();
+
+builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
 
 builder.Services.AddScoped<StateContainer>();
 

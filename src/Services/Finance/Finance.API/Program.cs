@@ -28,13 +28,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseGlobalExceptionHandler();
+
 app.UseApplicationCors();
 
 app.UseAuthentication();
 
 app.UseAuthorization();
-
-app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.MapControllers();
 

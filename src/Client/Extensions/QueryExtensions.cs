@@ -5,7 +5,7 @@ namespace PAD.Client.Extensions;
 
 public static class QueryExtensions
 {
-    public static string AddQueryString(this string basePath, object obj)
+    public static string AddQueryString(string basePath, object obj)
     {
         Dictionary<string, string> queryParams = obj.GetType()
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)

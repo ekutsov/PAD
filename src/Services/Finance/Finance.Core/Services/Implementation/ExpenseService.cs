@@ -1,4 +1,5 @@
-using PAD.Finance.API.Extensions;
+using PAD.Finance.Core.Extensions;
+using PAD.General.Domain.Exceptions;
 
 namespace PAD.Finance.Core.Services;
 
@@ -15,6 +16,7 @@ public class ExpenseService : BaseService, IExpenseService
     public async Task<TableViewModel<ExpenseViewModel>> GetPagedAsync(TableStateDTO tableState, Guid userId)
     {
         string searchString = "%" + tableState.SearchString + "%";
+
         IQueryable<Expense> query = _context.Expsenses
             .Where(e => e.AuthorId == userId)
             .Where(e => tableState.StartDate.ToUniversalTime() <= e.CreatedDate && tableState.EndDate.ToUniversalTime() >= e.CreatedDate)
@@ -54,27 +56,33 @@ public class ExpenseService : BaseService, IExpenseService
 
     public async Task UpdateAsync(Guid id, ExpenseDTO expenseDTO, Guid userId)
     {
-        Expense? expense = await _context.Expsenses.FirstOrDefaultAsync(e => e.Id == id && e.AuthorId == userId);
+        Expense expense = await GetByIdAsync(id, userId);
 
-        if (expense != null)
-        {
-            _mapper.Map(expenseDTO, expense);
+        _mapper.Map(expenseDTO, expense);
 
-            _context.Expsenses.Update(expense);
+        _context.Expsenses.Update(expense);
 
-            await _context.SaveChangesAsync();
-        }
+        await _context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(Guid id, Guid userId)
     {
+        Expense expense = await GetByIdAsync(id, userId);
+
+        _context.Expsenses.Remove(expense);
+
+        await _context.SaveChangesAsync();
+    }
+
+    private async Task<Expense> GetByIdAsync(Guid id, Guid userId)
+    {
         Expense? expense = await _context.Expsenses.FirstOrDefaultAsync(e => e.Id == id && e.AuthorId == userId);
 
-        if(expense != null)
+        if (expense == null)
         {
-            _context.Expsenses.Remove(expense);
-
-            await _context.SaveChangesAsync();
+            throw new NotFoundException("Expense not found");
         }
+
+        return expense;
     }
 }

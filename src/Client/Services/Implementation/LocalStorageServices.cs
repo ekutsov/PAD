@@ -2,7 +2,7 @@ namespace PAD.Client.Services;
 
 public class LocalStorageService : ILocalStorageService
 {
-    private IJSRuntime _jsRuntime;
+    private readonly IJSRuntime _jsRuntime;
 
     public LocalStorageService(IJSRuntime jsRuntime)
     {
@@ -11,17 +11,17 @@ public class LocalStorageService : ILocalStorageService
 
     public async Task<T> GetItemAsync<T>(string key)
     {
-        var json = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", key);
+        string content = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", key);
 
-        if (json == null)
+        if (content == null)
             return default;
 
-        return JsonSerializer.Deserialize<T>(json);
+        return JsonConvert.DeserializeObject<T>(content);
     }
 
     public async Task SetItemAsync<T>(string key, T value)
     {
-        await _jsRuntime.InvokeVoidAsync("localStorage.setItem", key, JsonSerializer.Serialize(value));
+        await _jsRuntime.InvokeVoidAsync("localStorage.setItem", key, JsonConvert.SerializeObject(value));
     }
 
     public async Task RemoveItemAsync(string key)

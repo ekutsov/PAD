@@ -3,7 +3,10 @@
 public class FinanceService : HttpService, IFinanceService
 {
     private const string BasePath = "finance/expenses/";
-    public FinanceService(HttpClient client, StateContainer state) : base(client, state) { }
+
+    public FinanceService(HttpClient client,
+                          ISnackbarService snackbar,
+                          StateContainer state) : base(client, snackbar, state) { }
 
     public async Task<TableData<Expense>> GetPagedExpensesAsync(TableStateDTO tableState) =>
         await GetPagedCollectionAsync<Expense>(BasePath, tableState);
@@ -11,12 +14,12 @@ public class FinanceService : HttpService, IFinanceService
     public async Task<List<ExpenseCategory>> GetExpenseCategoriesAsync() =>
         await GetCollectionAsync<ExpenseCategory>(BasePath + "categories");
 
-    public async Task CreateExpenseAsync(ExpenseDTO expense) =>
+    public async Task<bool> CreateExpenseAsync(ExpenseDTO expense) =>
         await CreateAsync(BasePath, expense);
 
-    public async Task UpdateExpenseAsync(Guid id, ExpenseDTO expense) =>
+    public async Task<bool> UpdateExpenseAsync(Guid id, ExpenseDTO expense) =>
         await UpdateAsync(BasePath + id, expense);
 
-    public async Task DeleteExpenseAsync(Guid id) =>
+    public async Task<bool> DeleteExpenseAsync(Guid id) =>
         await DeleteAsync(BasePath + id);
 }

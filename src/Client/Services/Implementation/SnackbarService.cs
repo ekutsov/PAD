@@ -7,4 +7,8 @@ public class SnackbarClientService : ISnackbarService
     public SnackbarClientService(ISnackbar snackbar) { _snackbar = snackbar; }
 
     public void Success(string message) => _snackbar.Add(message, Severity.Success);
+
+    public void Warning(string message) => _snackbar.Add(message, Severity.Warning);
+
+    public void Error(string message) => _snackbar.Add(message, Severity.Error);
 }

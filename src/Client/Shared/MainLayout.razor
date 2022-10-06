@@ -26,7 +26,7 @@
             </MudMenu>
         </MudTooltip>
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" ClipMode="_themeManager.DrawerClipMode"
+    <MudDrawer @bind-Open="_isDrawerOpen" ClipMode="_themeManager.DrawerClipMode"
         Elevation="_themeManager.DrawerElevation">
         <MudNavMenu Bordered="true">
             <MudNavLink Href="" Match="NavLinkMatch.All" DisableRipple="true" Icon="@Icons.Material.Outlined.Home">Home
@@ -40,14 +40,7 @@
         </MudNavMenu>
     </MudDrawer>
     <MudMainContent>
-        <MudContainer Style="height: 100%" MaxWidth="MaxWidth.ExtraExtraLarge">
-            @* <MudOverlay Visible="State.IsLoading"
-                Style="height: 100%; position: static; background-color: transparent;">
-                <div class="d-flex flex-column justify-content-end align-items-center">
-                    <div class="spinner"></div>
-                    <div style="font-size: 18px; margin-top: 10px;">Loading</div>
-                </div>
-            </MudOverlay> *@
+        <MudContainer Fixed="true" Style="height: 100%" MaxWidth="MaxWidth.ExtraExtraLarge">
             @Body
         </MudContainer>
     </MudMainContent>

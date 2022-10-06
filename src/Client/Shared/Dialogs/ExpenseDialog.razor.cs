@@ -8,6 +8,8 @@ public partial class ExpenseDialog
 
     [Inject] protected StateContainer State { get; set; }
 
+    [Inject] private ISnackbarService Snackbar { get; set; }
+
     [Parameter] public Expense Expense { get; set; }
 
     [Parameter] public List<ExpenseCategory> Categories { get; set; }
@@ -33,11 +35,21 @@ public partial class ExpenseDialog
 
         if (!IsEditMode)
         {
-            await FinanceService.CreateExpenseAsync(ExpenseDTO);
+            bool isSuccessResult = await FinanceService.CreateExpenseAsync(ExpenseDTO);
+
+            if(isSuccessResult)
+            {
+                Snackbar.Success("The expense was created");
+            }
         }
         else
         {
-            await FinanceService.UpdateExpenseAsync(Expense.Id, ExpenseDTO);
+            bool isSuccessResult = await FinanceService.UpdateExpenseAsync(Expense.Id, ExpenseDTO);
+
+            if (isSuccessResult)
+            {
+                Snackbar.Success("The expense was updated");
+            }
         }
 
         MudDialog.Close(DialogResult.Ok(true));
